@@ -485,50 +485,39 @@ func CalVccTotalDeplete(cardnumber string, startTime int, endTime int) (float64,
 	// balance := decreaseAmount
 
 	// return balance, nil
-	var initialAmount, increaseAmount, decreaseAmount float64  
-  
-	// 查找与特定卡号相关的开卡交易以获取初始金额  
-	var initTrans Transaction  
-	if err := db.Where("card_number = ? AND transaction_type = ?", cardnumber, "开卡").First(&initTrans).Error; err != nil {  
-		if errors.Is(err, gorm.ErrRecordNotFound) {  
-			return 0, fmt.Errorf("没有找到与卡号 %s 相关的开卡交易", cardnumber)  
-		}  
-		return 0, err  
-	}  
-	initialAmount = initTrans.OrderAmount  
-  
-	// 初始化查询条件  
-	whereConditions := []interface{}{cardnumber}  
-	query := db.Table("transaction").Select("SUM(order_amount) as total")  
-  
-	// 如果startTime和endTime都不为0，则添加时间范围条件  
-	if startTime != 0 && endTime != 0 {  
-		whereConditions = append(whereConditions, "transaction_time BETWEEN ? AND ?")  
-		whereConditions = append(whereConditions, time.Unix(int64(startTime), 0), time.Unix(int64(endTime), 0))  
-	}  
-  
-	// 计算增加余额的交易总和  
-	var sumIncrease float64  
-	if err := query.Where("card_number = ? AND transaction_type IN ?", append(whereConditions, []string{"卡充值", "交易退款"}...)...).Scan(&sumIncrease).Error; err != nil {  
-		return 0, err  
-	}  
-	increaseAmount = sumIncrease  
-  
-	// 重置query变量（如果GORM不允许重用，则可能需要重新创建）  
-	// 注意：在某些GORM版本中，query可能已经包含了上一次Where的结果，所以这里我们重新创建它  
-	query = db.Table("transaction").Select("SUM(order_amount) as total")  
-  
-	// 计算减少余额的交易总和  
 	var sumDecrease float64  
-	if err := query.Where("card_number = ? AND transaction_type IN ?", append(whereConditions, []string{"交易授权", "卡充退"}...)...).Scan(&sumDecrease).Error; err != nil {  
-		return 0, err  
-	}  
-	decreaseAmount = sumDecrease  
+    // 构建查询条件  
+    var conditions []interface{}  
+    query := db.Table("transaction").  
+        Select("SUM(order_amount) as total")  
   
-	// 如果startTime和endTime为0，则这里不需要再次检查，因为上面的逻辑已经处理了  
+    // 添加卡号条件  
+    conditions = append(conditions, cardnumber)  
+    query = query.Where("card_number = ?", cardnumber)  
   
-	// 计算最终余额  
-	balance := initialAmount 
+    // 如果 startTime 和 endTime 都非零，则添加时间范围条件  
+    if startTime != 0 && endTime != 0 {  
+        // 假设 transaction_time 是 UNIX 时间戳（int 类型）  
+		startTime1 := time.Unix(int64(startTime), 0).UTC()
+		endTime1 := time.Unix(int64(endTime), 0).UTC()
+        conditions = append(conditions, startTime1, endTime1)  
+        query = query.Where("transaction_time BETWEEN ? AND ?", startTime1, endTime1)  
+    }  
+  
+    // 添加交易类型条件  
+    conditions = append(conditions, []string{"交易授权"}...) // 注意使用 ... 来展开切片  
+    query = query.Where("transaction_type IN ?", conditions[len(conditions)-1:]). // 注意这里的切片操作  
+  
+    // 执行查询并扫描结果  
+    if err := query.Scan(&sumDecrease).Error; err != nil {  
+        return 0, err // 如果查询或扫描失败，返回错误  
+    }  
+  
+    // 计算最终余额（这里假设 decreaseAmount 就是你要的余额减少量）  
+    // 注意：通常我们需要一个初始的余额值来减去 decreaseAmount，但这里没有提供，所以只返回减少量  
+    balance := sumDecrease // 如果 balance 是减少量，这里直接赋值  
+  
+    return balance, nil
 }
 
 type PaginationResult struct {

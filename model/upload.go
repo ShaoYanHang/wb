@@ -335,8 +335,8 @@ func GetTransactions(pageSize int, pageNum int ,cardNumber string, transactionTy
 		query = query.Where("transaction_type = ?", transactionType)  
 	}  
 	if startTime != nil && endTime != nil { 
-		startTimeT := time.Unix(startTime, 0).UTC()  
-        endTimeT := time.Unix(endTime, 0).UTC()   
+		startTimeT := time.Unix(int64(startTime), 0).UTC()  
+        endTimeT := time.Unix(int64(endTime), 0).UTC()   
 		query = query.Where("transaction_time BETWEEN ? AND ?", startTimeT, endTimeT)  
 	}  
 	

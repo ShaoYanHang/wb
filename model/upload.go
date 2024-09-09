@@ -506,7 +506,7 @@ func CalVccTotalDeplete(cardnumber string, startTime int, endTime int) (float64,
   
     // 添加交易类型条件  
     conditions = append(conditions, []string{"交易授权"}...) // 注意使用 ... 来展开切片  
-    query = query.Where("transaction_type IN ?", conditions[len(conditions)-1:]). // 注意这里的切片操作  
+    query = query.Where("transaction_type IN ?", conditions[len(conditions)-1:]) // 注意这里的切片操作  
   
     // 执行查询并扫描结果  
     if err := query.Scan(&sumDecrease).Error; err != nil {  

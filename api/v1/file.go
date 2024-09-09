@@ -14,8 +14,8 @@ func ShowFile1(c *gin.Context) {
 	pageNum, _ := strconv.Atoi(c.Query("pagenum"))
 	cardNumber  := c.Query("card_number")
 	transactionType  := c.Query("transaction_type")
-	startTime = strconv.Atoi(c.Query("starttime"))
-	endTime = strconv.Atoi(c.Query("endtime"))
+	startTime = strconv.Atoi(c.Query("start_time"))
+	endTime = strconv.Atoi(c.Query("end_time"))
 	switch {
 	case pageSize >= 100:
 		pageSize = 100

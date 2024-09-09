@@ -334,7 +334,7 @@ func GetTransactions(pageSize int, pageNum int ,cardNumber string, transactionTy
 	if transactionType != "" {  
 		query = query.Where("transaction_type = ?", transactionType)  
 	}  
-	if startTime != nil && endTime != nil { 
+	if startTime != 0 && endTime != 0 { 
 		startTimeT := time.Unix(int64(startTime), 0).UTC()  
         endTimeT := time.Unix(int64(endTime), 0).UTC()   
 		query = query.Where("transaction_time BETWEEN ? AND ?", startTimeT, endTimeT)  
@@ -358,8 +358,8 @@ func GetTransactions(pageSize int, pageNum int ,cardNumber string, transactionTy
 		countQuery = countQuery.Where("transaction_type = ?", transactionType)  
 	}  
 	if startTime != 0 && endTime != 0 {  
-        startTimeT := time.Unix(startTime, 0).UTC()  
-        endTimeT := time.Unix(endTime, 0).UTC()  
+        startTimeT := time.Unix(int64(startTime), 0).UTC()  
+        endTimeT := time.Unix(int64(endTime), 0).UTC()  
         query = query.Where("transaction_time BETWEEN ? AND ?", startTimeT, endTimeT)  
     }   
 	countQuery.Count(&total)  

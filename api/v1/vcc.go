@@ -71,14 +71,14 @@ func ShowVccBalanceAndDeplete(c *gin.Context) {
 		IDs = append([]string{id})
 	}
 	
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"code": 500,
-			"data": "",
-			"msg":  err.Error(),
-		})
-	}
-	paginationResult, err, total:= model.ShowVccBalanceAndDepletes(IDs, pageSize, pageNum, startTime, endTime)
+	// if err != nil {
+	// 	c.JSON(http.StatusBadRequest, gin.H{
+	// 		"code": 500,
+	// 		"data": "",
+	// 		"msg":  err.Error(),
+	// 	})
+	// }
+	paginationResult, err, total := model.ShowVccBalanceAndDepletes(IDs, pageSize, pageNum, startTime, endTime)
 	
 		c.JSON(http.StatusOK, gin.H{
 			"code": 200,

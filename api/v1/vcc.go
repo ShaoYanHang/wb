@@ -63,7 +63,14 @@ func ShowVccBalanceAndDeplete(c *gin.Context) {
 	pageNum, _ := strconv.Atoi(c.Query("pagenum"))
 	startTime, _ := strconv.Atoi(c.Query("start_time"))
 	endTime, _ := strconv.Atoi(c.Query("end_time"))
-	IDs, err := model.ShowVccID()
+	id := c.Query("id")
+	var IDs []string
+	if id == "" {
+		IDs, err := model.ShowVccID()
+	} else {
+		IDs = append([]string{id})
+	}
+	
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"code": 500,
@@ -71,7 +78,7 @@ func ShowVccBalanceAndDeplete(c *gin.Context) {
 			"msg":  err.Error(),
 		})
 	}
-	paginationResult, err, total:= model.ShowVccBalanceAndDeplete(IDs, pageSize, pageNum, startTime, endTime)
+	paginationResult, err, total:= model.ShowVccBalanceAndDepletes(IDs, pageSize, pageNum, startTime, endTime)
 	
 		c.JSON(http.StatusOK, gin.H{
 			"code": 200,

@@ -380,74 +380,155 @@ func GetTransactions(pageSize int, pageNum int ,cardNumber string, transactionTy
 }
 
 func CalVccBalance(cardnumber string, startTime int, endTime int) (float64, error) {
-	// 初始化变量
-	var initialAmount, increaseAmount, decreaseAmount float64
+	// // 初始化变量
+	// var initialAmount, increaseAmount, decreaseAmount float64
 
-	// 查找与特定卡号相关的开卡交易以获取初始金额
-	var initTrans Transaction
-	if startTime != 0 && endTime != 0 { 
-		startTimeT := time.Unix(int64(startTime), 0).UTC()  
-        endTimeT := time.Unix(int64(endTime), 0).UTC()    
-		if err := db.Where("card_number = ? AND transaction_type = ?", cardnumber, "开卡").
-					Where("transaction_time BETWEEN ? AND ?", startTimeT, endTimeT).
-					First(&initTrans).Error; err != nil {
-			if errors.Is(err, gorm.ErrRecordNotFound) {
-				// 如果没有找到开卡交易，可以返回0或某个特定值作为初始金额，或者返回一个错误
-				return 0, fmt.Errorf("没有找到与卡号 %s 相关的开卡交易", cardnumber)
-			}
-			return 0, err // 如果发生其他错误，返回错误
-	} else {
-		if err := db.Where("card_number = ? AND transaction_type = ?", cardnumber, "开卡").First(&initTrans).Error; err != nil {
-			if errors.Is(err, gorm.ErrRecordNotFound) {
-				// 如果没有找到开卡交易，可以返回0或某个特定值作为初始金额，或者返回一个错误
-				return 0, fmt.Errorf("没有找到与卡号 %s 相关的开卡交易", cardnumber)
-			}
-			return 0, err // 如果发生其他错误，返回错误
-		}
-	}
+	// // 查找与特定卡号相关的开卡交易以获取初始金额
+	// var initTrans Transaction
 	
-	initialAmount = initTrans.OrderAmount
+	// if err := db.Where("card_number = ? AND transaction_type = ?", cardnumber, "开卡").First(&initTrans).Error; err != nil {
+	// 	if errors.Is(err, gorm.ErrRecordNotFound) {
+	// 		// 如果没有找到开卡交易，可以返回0或某个特定值作为初始金额，或者返回一个错误
+	// 		return 0, fmt.Errorf("没有找到与卡号 %s 相关的开卡交易", cardnumber)
+	// 	}
+	// 	return 0, err // 如果发生其他错误，返回错误
+	// }
+	
+	
+	// initialAmount = initTrans.OrderAmount
 
-	// 计算增加余额的交易总和
-	var sumIncrease float64
-	if err := db.Table("transaction"). // 注意表名可能需要根据你的数据库实际情况修改
-						Select("SUM(order_amount) as total").
-						Where("card_number = ? AND transaction_type IN ?", cardnumber, []string{"卡充值", "交易退款"}).
-						Scan(&sumIncrease).Error; err != nil {
-		return 0, err // 如果查询或扫描失败，返回错误
-	}
-	increaseAmount = sumIncrease
+	// // 计算增加余额的交易总和
+	// var sumIncrease float64
+	// if err := db.Table("transaction"). // 注意表名可能需要根据你的数据库实际情况修改
+	// 					Select("SUM(order_amount) as total").
+	// 					Where("card_number = ? AND transaction_type IN ?", cardnumber, []string{"卡充值", "交易退款"}).
+	// 					Scan(&sumIncrease).Error; err != nil {
+	// 	return 0, err // 如果查询或扫描失败，返回错误
+	// }
+	// increaseAmount = sumIncrease
 
-	// 计算减少余额的交易总和
-	var sumDecrease float64
-	if err := db.Table("transaction"). // 注意表名可能需要根据你的数据库实际情况修改
-						Select("SUM(order_amount) as total").
-						Where("card_number = ? AND transaction_type IN ?", cardnumber, []string{"交易授权", "卡充退"}).
-						Scan(&sumDecrease).Error; err != nil {
-		return 0, err // 如果查询或扫描失败，返回错误
-	}
-	decreaseAmount = sumDecrease
+	// // 计算减少余额的交易总和
+	// var sumDecrease float64
+	// if err := db.Table("transaction"). // 注意表名可能需要根据你的数据库实际情况修改
+	// 					Select("SUM(order_amount) as total").
+	// 					Where("card_number = ? AND transaction_type IN ?", cardnumber, []string{"交易授权", "卡充退"}).
+	// 					Scan(&sumDecrease).Error; err != nil {
+	// 	return 0, err // 如果查询或扫描失败，返回错误
+	// }
+	// decreaseAmount = sumDecrease
 
-	// 计算最终余额
-	balance := initialAmount + increaseAmount + decreaseAmount
+	// // 计算最终余额
+	// balance := initialAmount + increaseAmount + decreaseAmount
 
-	return balance, nil
+	// return balance, nil
+
+    // 初始化变量  
+    var initialAmount, increaseAmount, decreaseAmount float64  
+  
+    // 查找与特定卡号相关的开卡交易以获取初始金额  
+    var initTrans Transaction  
+    if err := db.Where("card_number = ? AND transaction_type = ?", cardnumber, "开卡").First(&initTrans).Error; err != nil {  
+        if errors.Is(err, gorm.ErrRecordNotFound) {  
+            return 0, fmt.Errorf("没有找到与卡号 %s 相关的开卡交易", cardnumber)  
+        }  
+        return 0, err  
+    }  
+    initialAmount = initTrans.OrderAmount  
+  
+    // 准备时间条件  
+    var timeCondition string  
+    var timeValues []interface{}  
+    if startTime != 0 && endTime != 0 {  
+        // 如果startTime和endTime都不为0，则添加时间范围条件  
+        timeCondition = "AND transaction_time BETWEEN ? AND ?"  
+        timeValues = append(timeValues, time.Unix(int64(startTime), 0).UTC(), time.Unix(int64(endTime), 0).UTC())  
+    }
+  
+    // 计算增加余额的交易总和  
+    var sumIncrease float64  
+    if err := db.Table("transaction").  
+        Select("SUM(order_amount) as total").  
+        Where("card_number = ? AND transaction_type IN ? "+timeCondition, append([]interface{}{cardnumber, []string{"卡充值", "交易退款"}}, timeValues...)...).  
+        Scan(&sumIncrease).Error; err != nil {  
+        return 0, err  
+    }  
+    increaseAmount = sumIncrease  
+  
+    // 计算减少余额的交易总和  
+    var sumDecrease float64  
+    if err := db.Table("transaction").  
+        Select("SUM(order_amount) as total").  
+        Where("card_number = ? AND transaction_type IN ? "+timeCondition, append([]interface{}{cardnumber, []string{"交易授权", "卡充退"}}, timeValues...)...).  
+        Scan(&sumDecrease).Error; err != nil {  
+        return 0, err  
+    }  
+    decreaseAmount = sumDecrease  
+  
+    // 计算最终余额  
+    balance := initialAmount + increaseAmount - decreaseAmount  // 注意这里应该是增加-减少  
+  
+    return balance, nil  
+
 }
 
-func CalVccTotalDeplete(cardnumber string) (float64, error) {
+func CalVccTotalDeplete(cardnumber string, startTime int, endTime int) (float64, error) {
 
-	var sumDecrease float64
-	if err := db.Table("transaction").
-		Select("SUM(order_amount) as total").
-		Where("card_number = ? AND transaction_type IN ?", cardnumber, []string{"交易授权"}).Scan(&sumDecrease).Error; err != nil {
-		return 0, err // 如果查询或扫描失败，返回错误
-	}
-	decreaseAmount := sumDecrease
+	// var sumDecrease float64
+	// if err := db.Table("transaction").
+	// 	Select("SUM(order_amount) as total").
+	// 	Where("card_number = ? AND transaction_type IN ?", cardnumber, []string{"交易授权"}).Scan(&sumDecrease).Error; err != nil {
+	// 	return 0, err // 如果查询或扫描失败，返回错误
+	// }
+	// decreaseAmount := sumDecrease
 
-	// 计算最终余额
-	balance := decreaseAmount
+	// // 计算最终余额
+	// balance := decreaseAmount
 
-	return balance, nil
+	// return balance, nil
+	var initialAmount, increaseAmount, decreaseAmount float64  
+  
+	// 查找与特定卡号相关的开卡交易以获取初始金额  
+	var initTrans Transaction  
+	if err := db.Where("card_number = ? AND transaction_type = ?", cardnumber, "开卡").First(&initTrans).Error; err != nil {  
+		if errors.Is(err, gorm.ErrRecordNotFound) {  
+			return 0, fmt.Errorf("没有找到与卡号 %s 相关的开卡交易", cardnumber)  
+		}  
+		return 0, err  
+	}  
+	initialAmount = initTrans.OrderAmount  
+  
+	// 初始化查询条件  
+	whereConditions := []interface{}{cardnumber}  
+	query := db.Table("transaction").Select("SUM(order_amount) as total")  
+  
+	// 如果startTime和endTime都不为0，则添加时间范围条件  
+	if startTime != 0 && endTime != 0 {  
+		whereConditions = append(whereConditions, "transaction_time BETWEEN ? AND ?")  
+		whereConditions = append(whereConditions, time.Unix(int64(startTime), 0), time.Unix(int64(endTime), 0))  
+	}  
+  
+	// 计算增加余额的交易总和  
+	var sumIncrease float64  
+	if err := query.Where("card_number = ? AND transaction_type IN ?", append(whereConditions, []string{"卡充值", "交易退款"}...)...).Scan(&sumIncrease).Error; err != nil {  
+		return 0, err  
+	}  
+	increaseAmount = sumIncrease  
+  
+	// 重置query变量（如果GORM不允许重用，则可能需要重新创建）  
+	// 注意：在某些GORM版本中，query可能已经包含了上一次Where的结果，所以这里我们重新创建它  
+	query = db.Table("transaction").Select("SUM(order_amount) as total")  
+  
+	// 计算减少余额的交易总和  
+	var sumDecrease float64  
+	if err := query.Where("card_number = ? AND transaction_type IN ?", append(whereConditions, []string{"交易授权", "卡充退"}...)...).Scan(&sumDecrease).Error; err != nil {  
+		return 0, err  
+	}  
+	decreaseAmount = sumDecrease  
+  
+	// 如果startTime和endTime为0，则这里不需要再次检查，因为上面的逻辑已经处理了  
+  
+	// 计算最终余额  
+	balance := initialAmount 
 }
 
 type PaginationResult struct {
@@ -458,7 +539,7 @@ type PaginationResult struct {
 }
 
 // 实现分页的 ShowVccBalanceAndDeplete 函数
-func ShowVccBalanceAndDeplete(IDs []string, pageSize int, pageNum int, startTime int, endTime int) (*PaginationResult, error, int) {
+func ShowVccBalanceAndDepletes(IDs []string, pageSize int, pageNum int, startTime int, endTime int) (*PaginationResult, error, int) {
 
 	if pageSize <= 0 || pageNum <= 0 {
 		return nil, errors.New("pageSize and pageNum must be positive integers"), 0

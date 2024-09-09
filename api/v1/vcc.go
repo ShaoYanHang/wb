@@ -61,6 +61,8 @@ type PaginationResult struct {
 func ShowVccBalanceAndDeplete(c *gin.Context) {
 	pageSize, _ := strconv.Atoi(c.Query("pagesize"))
 	pageNum, _ := strconv.Atoi(c.Query("pagenum"))
+	startTime, _ := strconv.Atoi(c.Query("start_time"))
+	endTime, _ := strconv.Atoi(c.Query("end_time"))
 	IDs, err := model.ShowVccID()
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -69,7 +71,7 @@ func ShowVccBalanceAndDeplete(c *gin.Context) {
 			"msg":  err.Error(),
 		})
 	}
-	paginationResult, err, total:= model.ShowVccBalanceAndDeplete(IDs, pageSize, pageNum)
+	paginationResult, err, total:= model.ShowVccBalanceAndDeplete(IDs, pageSize, pageNum, startTime, endTime)
 	
 		c.JSON(http.StatusOK, gin.H{
 			"code": 200,

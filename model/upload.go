@@ -379,19 +379,33 @@ func GetTransactions(pageSize int, pageNum int ,cardNumber string, transactionTy
 	return transactions, nil, int(total)  
 }
 
-func CalVccBalance(cardnumber string) (float64, error) {
+func CalVccBalance(cardnumber string, startTime int, endTime int) (float64, error) {
 	// 初始化变量
 	var initialAmount, increaseAmount, decreaseAmount float64
 
 	// 查找与特定卡号相关的开卡交易以获取初始金额
 	var initTrans Transaction
-	if err := db.Where("card_number = ? AND transaction_type = ?", cardnumber, "开卡").First(&initTrans).Error; err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			// 如果没有找到开卡交易，可以返回0或某个特定值作为初始金额，或者返回一个错误
-			return 0, fmt.Errorf("没有找到与卡号 %s 相关的开卡交易", cardnumber)
+	if startTime != 0 && endTime != 0 { 
+		startTimeT := time.Unix(int64(startTime), 0).UTC()  
+        endTimeT := time.Unix(int64(endTime), 0).UTC()    
+		if err := db.Where("card_number = ? AND transaction_type = ?", cardnumber, "开卡").
+					Where("transaction_time BETWEEN ? AND ?", startTimeT, endTimeT).
+					First(&initTrans).Error; err != nil {
+			if errors.Is(err, gorm.ErrRecordNotFound) {
+				// 如果没有找到开卡交易，可以返回0或某个特定值作为初始金额，或者返回一个错误
+				return 0, fmt.Errorf("没有找到与卡号 %s 相关的开卡交易", cardnumber)
+			}
+			return 0, err // 如果发生其他错误，返回错误
+	} else {
+		if err := db.Where("card_number = ? AND transaction_type = ?", cardnumber, "开卡").First(&initTrans).Error; err != nil {
+			if errors.Is(err, gorm.ErrRecordNotFound) {
+				// 如果没有找到开卡交易，可以返回0或某个特定值作为初始金额，或者返回一个错误
+				return 0, fmt.Errorf("没有找到与卡号 %s 相关的开卡交易", cardnumber)
+			}
+			return 0, err // 如果发生其他错误，返回错误
 		}
-		return 0, err // 如果发生其他错误，返回错误
 	}
+	
 	initialAmount = initTrans.OrderAmount
 
 	// 计算增加余额的交易总和
@@ -444,7 +458,7 @@ type PaginationResult struct {
 }
 
 // 实现分页的 ShowVccBalanceAndDeplete 函数
-func ShowVccBalanceAndDeplete(IDs []string, pageSize int, pageNum int) (*PaginationResult, error, int) {
+func ShowVccBalanceAndDeplete(IDs []string, pageSize int, pageNum int, startTime int, endTime int) (*PaginationResult, error, int) {
 
 	if pageSize <= 0 || pageNum <= 0 {
 		return nil, errors.New("pageSize and pageNum must be positive integers"), 0
@@ -476,8 +490,8 @@ func ShowVccBalanceAndDeplete(IDs []string, pageSize int, pageNum int) (*Paginat
 		Deplete float64
 	})
 	for _, id := range currentPageIDs {
-		balance, _ := CalVccBalance(id)
-		deplete, _ := CalVccTotalDeplete(id)
+		balance, _ := CalVccBalance(id, startTime, endTime)
+		deplete, _ := CalVccTotalDeplete(id ,startTime, endTime)
 		result[id] = struct {
 			Balance float64
 			Deplete float64

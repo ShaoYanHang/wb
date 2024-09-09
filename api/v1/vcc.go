@@ -8,51 +8,51 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func ShowVccBalance(c *gin.Context) {
+// func ShowVccBalance(c *gin.Context) {
 
-	var req model.Transaction
-	// 使用BindJSON方法解析请求体到req变量中
-	if err := c.BindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"code": 500,
-			"data": "",
-			"msg":  err.Error(),
-		})
-		return
-	}
-	Balance, err := model.CalVccBalance(req.CardNumber)
-	formattedBalance := fmt.Sprintf("%.3f", Balance)
-	c.JSON(
-		http.StatusOK, gin.H{
-			"code": 200,
-			"data": formattedBalance,
-			"msg":  err,
-		},
-	)
-}
+// 	var req model.Transaction
+// 	// 使用BindJSON方法解析请求体到req变量中
+// 	if err := c.BindJSON(&req); err != nil {
+// 		c.JSON(http.StatusBadRequest, gin.H{
+// 			"code": 500,
+// 			"data": "",
+// 			"msg":  err.Error(),
+// 		})
+// 		return
+// 	}
+// 	Balance, err := model.CalVccBalance(req.CardNumber)
+// 	formattedBalance := fmt.Sprintf("%.3f", Balance)
+// 	c.JSON(
+// 		http.StatusOK, gin.H{
+// 			"code": 200,
+// 			"data": formattedBalance,
+// 			"msg":  err,
+// 		},
+// 	)
+// }
 
-func ShowVccDeplete(c *gin.Context) {
+// func ShowVccDeplete(c *gin.Context) {
 
-	var req model.Transaction
-	// 使用BindJSON方法解析请求体到req变量中
-	if err := c.BindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"code": 500,
-			"data": "",
-			"msg":  err.Error(),
-		})
-		return
-	}
-	Deplete, err := model.CalVccTotalDeplete(req.CardNumber)
+// 	var req model.Transaction
+// 	// 使用BindJSON方法解析请求体到req变量中
+// 	if err := c.BindJSON(&req); err != nil {
+// 		c.JSON(http.StatusBadRequest, gin.H{
+// 			"code": 500,
+// 			"data": "",
+// 			"msg":  err.Error(),
+// 		})
+// 		return
+// 	}
+// 	Deplete, err := model.CalVccTotalDeplete(req.CardNumber)
 
-	c.JSON(
-		http.StatusOK, gin.H{
-			"code": 200,
-			"data": Deplete,
-			"msg":  err,
-		},
-	)
-}
+// 	c.JSON(
+// 		http.StatusOK, gin.H{
+// 			"code": 200,
+// 			"data": Deplete,
+// 			"msg":  err,
+// 		},
+// 	)
+// }
 
 type PaginationResult struct {  
     CurrentPage map[string]struct{ Balance, Deplete float64 }  
@@ -66,7 +66,7 @@ func ShowVccBalanceAndDeplete(c *gin.Context) {
 	id := c.Query("id")
 	var IDs []string
 	if id == "" {
-		IDs, err := model.ShowVccID()
+		IDs, _ = model.ShowVccID()
 	} else {
 		IDs = append([]string{id})
 	}

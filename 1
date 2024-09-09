@@ -1,0 +1,7 @@
+transaction的 nickname 与 transaction_record的 account 对应
+transaction的 card_number 与 transaction_record的 payment_method 对应
+transaction的 transaction_type 为 交易授权 下的 order_amount 与 transaction_record的 amount 对应
+且 transaction_record的 is_trading_authorization 为 0
+
+则 transaction 的 is_judge 改为 1
+

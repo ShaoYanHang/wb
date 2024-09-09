@@ -1,0 +1,348 @@
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /static/*filepath         --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (4 handlers)
+[GIN-debug] HEAD   /static/*filepath         --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (4 handlers)
+[GIN-debug] GET    /admin/*filepath          --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (4 handlers)
+[GIN-debug] HEAD   /admin/*filepath          --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (4 handlers)
+[GIN-debug] GET    /favicon.ico              --> app/route.InitRouter.(*RouterGroup).StaticFile.func3 (4 handlers)
+[GIN-debug] HEAD   /favicon.ico              --> app/route.InitRouter.(*RouterGroup).StaticFile.func3 (4 handlers)
+[GIN-debug] GET    /                         --> app/route.InitRouter.func1 (4 handlers)
+[GIN-debug] GET    /admin                    --> app/route.InitRouter.func2 (4 handlers)
+[GIN-debug] GET    /api/v1/admin/users       --> app/api/v1.GetUsers (5 handlers)
+[GIN-debug] PUT    /api/v1/user/:id          --> app/api/v1.EditUser (5 handlers)
+[GIN-debug] DELETE /api/v1/user/:id          --> app/api/v1.DeleteUser (5 handlers)
+[GIN-debug] PUT    /api/v1/admin/changepw/:id --> app/api/v1.ChangeUserPassword (5 handlers)
+[GIN-debug] GET    /api/v1/admin/profile/:id --> app/api/v1.GetProfile (5 handlers)
+[GIN-debug] PUT    /api/v1/profile/:id       --> app/api/v1.UpdateProfile (5 handlers)
+[GIN-debug] POST   /api/v1/user/add          --> app/api/v1.AddUser (5 handlers)
+[GIN-debug] GET    /api/v1/user/:id          --> app/api/v1.GetUserInfo (5 handlers)
+[GIN-debug] GET    /api/v1/users             --> app/api/v1.GetUsers (5 handlers)
+[GIN-debug] POST   /api/v1/upload1           --> app/api/v1.Upload1 (4 handlers)
+[GIN-debug] POST   /api/v1/upload2           --> app/api/v1.Upload2 (4 handlers)
+[GIN-debug] GET    /api/v1/showvcc_record    --> app/api/v1.ShowFile1 (4 handlers)
+[GIN-debug] GET    /api/v1/showfb_record     --> app/api/v1.ShowFile2 (4 handlers)
+[GIN-debug] POST   /api/v1/showFBDataByaccount --> app/api/v1.ShowVirtualCardDataByaccount (4 handlers)
+[GIN-debug] POST   /api/v1/showFBByaccountList --> app/api/v1.ShowFBDataByaccountList (4 handlers)
+[GIN-debug] POST   /api/v1/showfb_vccdata    --> app/api/v1.Showfb_vccdata (4 handlers)
+[GIN-debug] POST   /api/v1/updateFBList      --> app/api/v1.UpdateTransactionRecord (4 handlers)
+[GIN-debug] POST   /api/v1/login             --> app/api/v1.Login (4 handlers)
+[GIN-debug] POST   /api/v1/loginfront        --> app/api/v1.LoginFront (4 handlers)
+[GIN-debug] GET    /api/v1/showVccID         --> app/api/v1.ShowVccID (4 handlers)
+[GIN-debug] POST   /api/v1/showVccBalance    --> app/api/v1.ShowVccBalance (4 handlers)
+[GIN-debug] POST   /api/v1/showVccDeplete    --> app/api/v1.ShowVccDeplete (4 handlers)
+[GIN-debug] POST   /api/v1/showVccDepleteByDate --> app/api/v1.ShowVccDepleteByDate (4 handlers)
+[GIN-debug] Listening and serving HTTP on :39010
+signal: terminated
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /static/*filepath         --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (4 handlers)
+[GIN-debug] HEAD   /static/*filepath         --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (4 handlers)
+[GIN-debug] GET    /admin/*filepath          --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (4 handlers)
+[GIN-debug] HEAD   /admin/*filepath          --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (4 handlers)
+[GIN-debug] GET    /favicon.ico              --> app/route.InitRouter.(*RouterGroup).StaticFile.func3 (4 handlers)
+[GIN-debug] HEAD   /favicon.ico              --> app/route.InitRouter.(*RouterGroup).StaticFile.func3 (4 handlers)
+[GIN-debug] GET    /                         --> app/route.InitRouter.func1 (4 handlers)
+[GIN-debug] GET    /admin                    --> app/route.InitRouter.func2 (4 handlers)
+[GIN-debug] GET    /api/v1/admin/users       --> app/api/v1.GetUsers (5 handlers)
+[GIN-debug] PUT    /api/v1/user/:id          --> app/api/v1.EditUser (5 handlers)
+[GIN-debug] DELETE /api/v1/user/:id          --> app/api/v1.DeleteUser (5 handlers)
+[GIN-debug] PUT    /api/v1/admin/changepw/:id --> app/api/v1.ChangeUserPassword (5 handlers)
+[GIN-debug] GET    /api/v1/admin/profile/:id --> app/api/v1.GetProfile (5 handlers)
+[GIN-debug] PUT    /api/v1/profile/:id       --> app/api/v1.UpdateProfile (5 handlers)
+[GIN-debug] POST   /api/v1/user/add          --> app/api/v1.AddUser (5 handlers)
+[GIN-debug] GET    /api/v1/user/:id          --> app/api/v1.GetUserInfo (5 handlers)
+[GIN-debug] GET    /api/v1/users             --> app/api/v1.GetUsers (5 handlers)
+[GIN-debug] POST   /api/v1/upload1           --> app/api/v1.Upload1 (4 handlers)
+[GIN-debug] POST   /api/v1/upload2           --> app/api/v1.Upload2 (4 handlers)
+[GIN-debug] GET    /api/v1/showvcc_record    --> app/api/v1.ShowFile1 (4 handlers)
+[GIN-debug] GET    /api/v1/showfb_record     --> app/api/v1.ShowFile2 (4 handlers)
+[GIN-debug] POST   /api/v1/showFBDataByaccount --> app/api/v1.ShowVirtualCardDataByaccount (4 handlers)
+[GIN-debug] POST   /api/v1/showFBByaccountList --> app/api/v1.ShowFBDataByaccountList (4 handlers)
+[GIN-debug] POST   /api/v1/showfb_vccdata    --> app/api/v1.Showfb_vccdata (4 handlers)
+[GIN-debug] POST   /api/v1/updateFBList      --> app/api/v1.UpdateTransactionRecord (4 handlers)
+[GIN-debug] POST   /api/v1/login             --> app/api/v1.Login (4 handlers)
+[GIN-debug] POST   /api/v1/loginfront        --> app/api/v1.LoginFront (4 handlers)
+[GIN-debug] GET    /api/v1/showVccID         --> app/api/v1.ShowVccID (4 handlers)
+[GIN-debug] POST   /api/v1/showVccBalance    --> app/api/v1.ShowVccBalance (4 handlers)
+[GIN-debug] POST   /api/v1/showVccDeplete    --> app/api/v1.ShowVccDeplete (4 handlers)
+[GIN-debug] POST   /api/v1/showVccDepleteByDate --> app/api/v1.ShowVccDepleteByDate (4 handlers)
+[GIN-debug] Listening and serving HTTP on :39010
+signal: terminated
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /admin/*filepath          --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (4 handlers)
+[GIN-debug] HEAD   /admin/*filepath          --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (4 handlers)
+[GIN-debug] GET    /admin                    --> app/route.InitRouter.func1 (4 handlers)
+[GIN-debug] GET    /api/v1/admin/users       --> app/api/v1.GetUsers (5 handlers)
+[GIN-debug] PUT    /api/v1/user/:id          --> app/api/v1.EditUser (5 handlers)
+[GIN-debug] DELETE /api/v1/user/:id          --> app/api/v1.DeleteUser (5 handlers)
+[GIN-debug] PUT    /api/v1/admin/changepw/:id --> app/api/v1.ChangeUserPassword (5 handlers)
+[GIN-debug] GET    /api/v1/admin/profile/:id --> app/api/v1.GetProfile (5 handlers)
+[GIN-debug] PUT    /api/v1/profile/:id       --> app/api/v1.UpdateProfile (5 handlers)
+[GIN-debug] POST   /api/v1/user/add          --> app/api/v1.AddUser (5 handlers)
+[GIN-debug] GET    /api/v1/user/:id          --> app/api/v1.GetUserInfo (5 handlers)
+[GIN-debug] GET    /api/v1/users             --> app/api/v1.GetUsers (5 handlers)
+[GIN-debug] POST   /api/v1/upload1           --> app/api/v1.Upload1 (4 handlers)
+[GIN-debug] POST   /api/v1/upload2           --> app/api/v1.Upload2 (4 handlers)
+[GIN-debug] GET    /api/v1/showvcc_record    --> app/api/v1.ShowFile1 (4 handlers)
+[GIN-debug] GET    /api/v1/showfb_record     --> app/api/v1.ShowFile2 (4 handlers)
+[GIN-debug] POST   /api/v1/showFBDataByaccount --> app/api/v1.ShowVirtualCardDataByaccount (4 handlers)
+[GIN-debug] POST   /api/v1/showFBByaccountList --> app/api/v1.ShowFBDataByaccountList (4 handlers)
+[GIN-debug] POST   /api/v1/showfb_vccdata    --> app/api/v1.Showfb_vccdata (4 handlers)
+[GIN-debug] POST   /api/v1/updateFBList      --> app/api/v1.UpdateTransactionRecord (4 handlers)
+[GIN-debug] POST   /api/v1/login             --> app/api/v1.Login (4 handlers)
+[GIN-debug] POST   /api/v1/loginfront        --> app/api/v1.LoginFront (4 handlers)
+[GIN-debug] GET    /api/v1/showVccID         --> app/api/v1.ShowVccID (4 handlers)
+[GIN-debug] POST   /api/v1/showVccBalance    --> app/api/v1.ShowVccBalance (4 handlers)
+[GIN-debug] POST   /api/v1/showVccDeplete    --> app/api/v1.ShowVccDeplete (4 handlers)
+[GIN-debug] POST   /api/v1/showVccDepleteByDate --> app/api/v1.ShowVccDepleteByDate (4 handlers)
+[GIN-debug] Listening and serving HTTP on :39010
+2024/09/03 23:57:02 没有对应数据
+2024/09/03 23:57:02 没有对应数据
+2024/09/03 23:57:02 没有对应数据
+2024/09/03 23:57:02 没有对应数据
+2024/09/03 23:57:02 没有对应数据
+2024/09/03 23:57:02 没有对应数据
+2024/09/03 23:57:02 没有对应数据
+2024/09/03 23:57:02 没有对应数据
+2024/09/03 23:57:02 没有对应数据
+2024/09/03 23:57:02 没有对应数据
+2024/09/03 23:57:02 没有对应数据
+2024/09/03 23:57:02 没有对应数据
+2024/09/03 23:57:02 没有对应数据
+2024/09/03 23:57:02 没有对应数据
+2024/09/03 23:57:02 没有对应数据
+2024/09/03 23:57:02 没有对应数据
+2024/09/03 23:57:02 没有对应数据
+2024/09/03 23:59:53 没有对应数据
+2024/09/03 23:59:53 没有对应数据
+2024/09/03 23:59:53 没有对应数据
+2024/09/03 23:59:53 没有对应数据
+2024/09/03 23:59:53 没有对应数据
+2024/09/03 23:59:53 没有对应数据
+2024/09/03 23:59:53 没有对应数据
+2024/09/03 23:59:53 没有对应数据
+2024/09/03 23:59:53 没有对应数据
+2024/09/03 23:59:53 没有对应数据
+2024/09/03 23:59:53 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:00:13 没有对应数据
+2024/09/04 00:01:13 没有对应数据
+2024/09/04 00:01:13 没有对应数据
+2024/09/04 00:01:13 没有对应数据
+2024/09/04 00:01:13 没有对应数据
+2024/09/04 00:01:13 没有对应数据
+2024/09/04 00:01:13 没有对应数据
+2024/09/04 00:01:13 没有对应数据
+2024/09/04 00:01:13 没有对应数据
+2024/09/04 00:01:13 没有对应数据
+2024/09/04 00:01:13 没有对应数据
+2024/09/04 00:01:13 没有对应数据
+2024/09/04 00:01:13 没有对应数据
+2024/09/04 00:01:13 没有对应数据
+2024/09/04 00:01:14 没有对应数据
+2024/09/04 00:01:14 没有对应数据
+2024/09/04 00:01:14 没有对应数据
+2024/09/04 00:01:14 没有对应数据
+2024/09/04 00:01:14 没有对应数据
+2024/09/04 00:01:14 没有对应数据
+2024/09/04 00:01:14 没有对应数据
+2024/09/04 00:01:14 没有对应数据
+2024/09/04 00:01:14 没有对应数据
+2024/09/04 00:01:14 没有对应数据
+2024/09/04 00:01:14 没有对应数据
+2024/09/04 00:01:14 没有对应数据
+2024/09/04 00:01:14 没有对应数据
+2024/09/04 00:01:14 没有对应数据
+2024/09/04 00:01:14 没有对应数据
+2024/09/04 00:01:14 没有对应数据
+2024/09/04 00:01:14 没有对应数据
+2024/09/04 00:01:14 没有对应数据
+2024/09/04 00:01:14 没有对应数据
+2024/09/04 00:01:14 没有对应数据
+2024/09/04 00:01:14 没有对应数据
+2024/09/04 00:01:14 没有对应数据
+2024/09/04 00:01:14 没有对应数据
+2024/09/04 00:01:14 没有对应数据
+2024/09/04 00:01:14 没有对应数据
+2024/09/04 00:01:14 没有对应数据
+2024/09/04 00:01:14 没有对应数据
+2024/09/04 00:01:14 没有对应数据
+2024/09/04 00:01:14 没有对应数据
+2024/09/04 00:01:14 没有对应数据
+2024/09/04 00:01:32 没有对应数据
+2024/09/04 00:01:32 没有对应数据
+2024/09/04 00:01:32 没有对应数据
+2024/09/04 00:01:33 没有对应数据
+2024/09/04 00:01:33 没有对应数据
+2024/09/04 00:01:33 没有对应数据
+2024/09/04 00:01:33 没有对应数据
+2024/09/04 00:01:33 没有对应数据
+2024/09/04 00:01:33 没有对应数据
+2024/09/04 00:01:33 没有对应数据
+2024-08-01 00:00:002024-09-01 00:00:002023-12-01 00:00:002024-01-01 00:00:002024-07-01 00:00:002024-08-01 00:00:002024-07-01 00:00:002024-08-01 00:00:002024-08-01 00:00:002024-09-01 00:00:00signal: terminated
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /admin/*filepath          --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (4 handlers)
+[GIN-debug] HEAD   /admin/*filepath          --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (4 handlers)
+[GIN-debug] GET    /admin                    --> app/route.InitRouter.func1 (4 handlers)
+[GIN-debug] GET    /api/v1/admin/users       --> app/api/v1.GetUsers (5 handlers)
+[GIN-debug] PUT    /api/v1/user/:id          --> app/api/v1.EditUser (5 handlers)
+[GIN-debug] DELETE /api/v1/user/:id          --> app/api/v1.DeleteUser (5 handlers)
+[GIN-debug] PUT    /api/v1/admin/changepw/:id --> app/api/v1.ChangeUserPassword (5 handlers)
+[GIN-debug] GET    /api/v1/admin/profile/:id --> app/api/v1.GetProfile (5 handlers)
+[GIN-debug] PUT    /api/v1/profile/:id       --> app/api/v1.UpdateProfile (5 handlers)
+[GIN-debug] POST   /api/v1/user/add          --> app/api/v1.AddUser (5 handlers)
+[GIN-debug] GET    /api/v1/user/:id          --> app/api/v1.GetUserInfo (5 handlers)
+[GIN-debug] GET    /api/v1/users             --> app/api/v1.GetUsers (5 handlers)
+[GIN-debug] POST   /api/v1/upload1           --> app/api/v1.Upload1 (4 handlers)
+[GIN-debug] POST   /api/v1/upload2           --> app/api/v1.Upload2 (4 handlers)
+[GIN-debug] GET    /api/v1/showvcc_record    --> app/api/v1.ShowFile1 (4 handlers)
+[GIN-debug] GET    /api/v1/showfb_record     --> app/api/v1.ShowFile2 (4 handlers)
+[GIN-debug] POST   /api/v1/showFBDataByaccount --> app/api/v1.ShowVirtualCardDataByaccount (4 handlers)
+[GIN-debug] POST   /api/v1/showFBByaccountList --> app/api/v1.ShowFBDataByaccountList (4 handlers)
+[GIN-debug] POST   /api/v1/showfb_vccdata    --> app/api/v1.Showfb_vccdata (4 handlers)
+[GIN-debug] POST   /api/v1/updateFBList      --> app/api/v1.UpdateTransactionRecord (4 handlers)
+[GIN-debug] POST   /api/v1/login             --> app/api/v1.Login (4 handlers)
+[GIN-debug] POST   /api/v1/loginfront        --> app/api/v1.LoginFront (4 handlers)
+[GIN-debug] GET    /api/v1/showVccID         --> app/api/v1.ShowVccID (4 handlers)
+[GIN-debug] POST   /api/v1/showVccBalance    --> app/api/v1.ShowVccBalance (4 handlers)
+[GIN-debug] POST   /api/v1/showVccDeplete    --> app/api/v1.ShowVccDeplete (4 handlers)
+[GIN-debug] POST   /api/v1/showVccDepleteByDate --> app/api/v1.ShowVccDepleteByDate (4 handlers)
+[GIN-debug] Listening and serving HTTP on :39010
+2024-08-01 00:00:002024-09-01 00:00:002024-08-01 00:00:002024-09-01 00:00:002024-08-01 00:00:002024-09-01 00:00:002024-08-01 00:00:002024-09-01 00:00:002024-08-01 00:00:002024-09-01 00:00:002024-08-01 00:00:002024-09-01 00:00:002024-08-01 00:00:002024-09-01 00:00:002024-06-01 00:00:002024-07-01 00:00:002024-07-01 00:00:002024-08-01 00:00:002024-08-01 00:00:002024-09-01 00:00:002024-08-01 00:00:002024-09-01 00:00:002024-08-01 00:00:002024-09-01 00:00:00
+
+[31m2024/09/05 17:09:41 [Recovery] 2024/09/05 - 17:09:41 panic recovered:
+POST /api/v1/upload1 HTTP/1.1
+Host: 111.90.143.10:39010
+Accept: */*
+Accept-Encoding: gzip, deflate
+Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
+Connection: keep-alive
+Content-Length: 18835
+Content-Type: multipart/form-data; boundary=---------------------------26953585636229544713281976968
+Cookie: 8e3ca49a6ddfe75e5a252467a028cd47=974c0850-5afc-4ad6-87ef-bc7e9b4cdaa6.UXgCy4Yp3QaKQDCEgl2VjKU5ePw; order=id%20desc; serverType=nginx; pro_end=-1; ltd_end=-1; bt_user_info=%7B%22status%22%3Atrue%2C%22msg%22%3A%22%u83B7%u53D6%u6210%u529F%21%22%2C%22data%22%3A%7B%22username%22%3A%22135****2647%22%7D%7D; memSize=7820; docker_model=fast_project; sites_path=/www/wwwroot
+Origin: http://111.90.143.10:39010
+Referer: http://111.90.143.10:39010/admin/addart
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:130.0) Gecko/20100101 Firefox/130.0
+X-Requested-With: XMLHttpRequest
+
+
+runtime error: index out of range [15] with length 15
+/usr/local/go/src/runtime/panic.go:114 (0x43b53b)
+	goPanicIndex: panic(boundsError{x: int64(x), signed: true, y: y, code: boundsIndex})
+/app/model/upload.go:104 (0x8627c7)
+	ImportTransactionsFromXLSX: trans.SettlementStatus = row[15]
+/app/api/v1/upload.go:35 (0xac463c)
+	Upload1: err1 := model.ImportTransactionsFromXLSX(dst) // 假设 db 是你的数据库连接
+/opt/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185 (0xa86f59)
+	(*Context).Next: c.handlers[c.index](c)
+/opt/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102 (0xa86f47)
+	CustomRecoveryWithWriter.func1: c.Next()
+/opt/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185 (0xab2a95)
+	(*Context).Next: c.handlers[c.index](c)
+/app/middleware/logger.go:52 (0xab2a7c)
+	Logger.func1: c.Next()
+/opt/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185 (0xa85cf1)
+	(*Context).Next: c.handlers[c.index](c)
+/opt/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633 (0xa85760)
+	(*Engine).handleHTTPRequest: c.Next()
+/opt/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589 (0xa85291)
+	(*Engine).ServeHTTP: engine.handleHTTPRequest(c)
+/usr/local/go/src/net/http/server.go:3137 (0x8c3ccd)
+	serverHandler.ServeHTTP: handler.ServeHTTP(rw, req)
+/usr/local/go/src/net/http/server.go:2039 (0x8bf087)
+	(*conn).serve: serverHandler{c.server}.ServeHTTP(w, w.req)
+/usr/local/go/src/runtime/asm_amd64.s:1695 (0x472880)
+	goexit: BYTE	$0x90	// NOP
+[0m
+
+
+[31m2024/09/05 17:09:52 [Recovery] 2024/09/05 - 17:09:52 panic recovered:
+POST /api/v1/upload1 HTTP/1.1
+Host: 111.90.143.10:39010
+Accept: */*
+Accept-Encoding: gzip, deflate
+Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
+Connection: keep-alive
+Content-Length: 18837
+Content-Type: multipart/form-data; boundary=---------------------------395034137023321189811028292549
+Cookie: 8e3ca49a6ddfe75e5a252467a028cd47=974c0850-5afc-4ad6-87ef-bc7e9b4cdaa6.UXgCy4Yp3QaKQDCEgl2VjKU5ePw; order=id%20desc; serverType=nginx; pro_end=-1; ltd_end=-1; bt_user_info=%7B%22status%22%3Atrue%2C%22msg%22%3A%22%u83B7%u53D6%u6210%u529F%21%22%2C%22data%22%3A%7B%22username%22%3A%22135****2647%22%7D%7D; memSize=7820; docker_model=fast_project; sites_path=/www/wwwroot
+Origin: http://111.90.143.10:39010
+Referer: http://111.90.143.10:39010/admin/addart
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:130.0) Gecko/20100101 Firefox/130.0
+X-Requested-With: XMLHttpRequest
+
+
+runtime error: index out of range [15] with length 15
+/usr/local/go/src/runtime/panic.go:114 (0x43b53b)
+	goPanicIndex: panic(boundsError{x: int64(x), signed: true, y: y, code: boundsIndex})
+/app/model/upload.go:104 (0x8627c7)
+	ImportTransactionsFromXLSX: trans.SettlementStatus = row[15]
+/app/api/v1/upload.go:35 (0xac463c)
+	Upload1: err1 := model.ImportTransactionsFromXLSX(dst) // 假设 db 是你的数据库连接
+/opt/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185 (0xa86f59)
+	(*Context).Next: c.handlers[c.index](c)
+/opt/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/recovery.go:102 (0xa86f47)
+	CustomRecoveryWithWriter.func1: c.Next()
+/opt/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185 (0xab2a95)
+	(*Context).Next: c.handlers[c.index](c)
+/app/middleware/logger.go:52 (0xab2a7c)
+	Logger.func1: c.Next()
+/opt/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/context.go:185 (0xa85cf1)
+	(*Context).Next: c.handlers[c.index](c)
+/opt/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:633 (0xa85760)
+	(*Engine).handleHTTPRequest: c.Next()
+/opt/go/pkg/mod/github.com/gin-gonic/gin@v1.10.0/gin.go:589 (0xa85291)
+	(*Engine).ServeHTTP: engine.handleHTTPRequest(c)
+/usr/local/go/src/net/http/server.go:3137 (0x8c3ccd)
+	serverHandler.ServeHTTP: handler.ServeHTTP(rw, req)
+/usr/local/go/src/net/http/server.go:2039 (0x8bf087)
+	(*conn).serve: serverHandler{c.server}.ServeHTTP(w, w.req)
+/usr/local/go/src/runtime/asm_amd64.s:1695 (0x472880)
+	goexit: BYTE	$0x90	// NOP
+[0m
+2024-08-01 00:00:002024-09-01 00:00:00signal: terminated

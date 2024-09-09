@@ -1,0 +1,156 @@
+package v1
+
+import (
+	"app/model"
+	"fmt"
+	"net/http"
+	"strconv"
+	"github.com/gin-gonic/gin"
+)
+
+func ShowVccBalance(c *gin.Context) {
+
+	var req model.Transaction
+	// 使用BindJSON方法解析请求体到req变量中
+	if err := c.BindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code": 500,
+			"data": "",
+			"msg":  err.Error(),
+		})
+		return
+	}
+	Balance, err := model.CalVccBalance(req.CardNumber)
+	formattedBalance := fmt.Sprintf("%.3f", Balance)
+	c.JSON(
+		http.StatusOK, gin.H{
+			"code": 200,
+			"data": formattedBalance,
+			"msg":  err,
+		},
+	)
+}
+
+func ShowVccDeplete(c *gin.Context) {
+
+	var req model.Transaction
+	// 使用BindJSON方法解析请求体到req变量中
+	if err := c.BindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code": 500,
+			"data": "",
+			"msg":  err.Error(),
+		})
+		return
+	}
+	Deplete, err := model.CalVccTotalDeplete(req.CardNumber)
+
+	c.JSON(
+		http.StatusOK, gin.H{
+			"code": 200,
+			"data": Deplete,
+			"msg":  err,
+		},
+	)
+}
+
+type PaginationResult struct {  
+    CurrentPage map[string]struct{ Balance, Deplete float64 }  
+}  
+
+func ShowVccBalanceAndDeplete(c *gin.Context) {
+	pageSize, _ := strconv.Atoi(c.Query("pagesize"))
+	pageNum, _ := strconv.Atoi(c.Query("pagenum"))
+	IDs, err := model.ShowVccID()
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code": 500,
+			"data": "",
+			"msg":  err.Error(),
+		})
+	}
+	paginationResult, err, total:= model.ShowVccBalanceAndDeplete(IDs, pageSize, pageNum)
+	
+		c.JSON(http.StatusOK, gin.H{
+			"code": 200,
+			"data": paginationResult,
+			"msg":  err,
+			"total": total,
+		})
+	
+}
+
+func ShowVccID(c *gin.Context) {
+	IDs, err := model.ShowVccID()
+	if err != nil {
+		c.JSON(
+			http.StatusBadRequest, gin.H{
+				"code": 500,
+				"data": "",
+				"msg":  err,
+			},
+		)
+	} else {
+		c.JSON(
+			http.StatusOK, gin.H{
+				"code": 200,
+				"data": IDs,
+				"msg":  err,
+			},
+		)
+	}
+
+}
+
+func ShowFBID(c *gin.Context) {
+	Account := c.Query("account")
+	FBIDs, VCCIDs ,err := model.ShowFBID(Account)
+	if err != nil {
+		c.JSON(
+			http.StatusBadRequest, gin.H{
+				"code": 500,
+				"data": "",
+				"msg":  err,
+			},
+		)
+	} else {
+		c.JSON(
+			http.StatusOK, gin.H{
+				"code": 200,
+				"data1": FBIDs,
+				"data2": VCCIDs,
+				"msg":  err,
+			},
+		)
+	}
+
+}
+
+type VccDepleteRequest struct {
+	Year       int    `json:"year"`
+	Month      int    `json:"month"`
+	CardNumber string `json:"card_number"` // 注意这里使用了card_number而不是vccid
+}
+
+func ShowVccDepleteByDate(c *gin.Context) {
+	var req VccDepleteRequest
+	// 使用BindJSON方法解析请求体到req变量中
+	if err := c.BindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code": 500,
+			"data": "",
+			"msg":  err.Error(),
+		})
+		return
+	}
+
+	Deplete, err := model.CalVccDepleteByDate(req.Year, req.Month, req.CardNumber)
+	formattedDeplete := fmt.Sprintf("%.3f", Deplete)
+	c.JSON(
+		http.StatusOK, gin.H{
+			"code": 200,
+			"data": formattedDeplete,
+			"msg":  err,
+		},
+	)
+}

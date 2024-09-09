@@ -1,0 +1,9 @@
+curl --location 'http://internal.api.ucloud.cn' \
+--header 'Content-Type: application/json' \
+--data '{
+"Action":"IAddUserVPCProduct",
+"RegionId":1000039,
+"Backend":"UVPCFEGO",
+"company_id":50909548,
+"production_id": "425"
+}'

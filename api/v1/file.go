@@ -14,7 +14,8 @@ func ShowFile1(c *gin.Context) {
 	pageNum, _ := strconv.Atoi(c.Query("pagenum"))
 	cardNumber  := c.Query("card_number")
 	transactionType  := c.Query("transaction_type")
-
+	startTime = strconv.Atoi(c.Query("starttime"))
+	endTime = strconv.Atoi(c.Query("endtime"))
 	switch {
 	case pageSize >= 100:
 		pageSize = 100
@@ -26,7 +27,7 @@ func ShowFile1(c *gin.Context) {
 		pageNum = 1
 	}
 
-	result, err, total := model.GetTransactions(pageSize, pageNum, cardNumber, transactionType)
+	result, err, total := model.GetTransactions(pageSize, pageNum, cardNumber, transactionType, startTime ,endTime)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"code": 500,

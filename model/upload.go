@@ -307,7 +307,7 @@ func GetTransactionRecords(pageSize int, pageNum int, Account string, PaymentMet
     return transactionRecords, nil, total  
 }
 
-func GetTransactions(pageSize int, pageNum int ,cardNumber string, transactionType string) ([]Transaction, error, int) {
+func GetTransactions(pageSize int, pageNum int ,cardNumber string, transactionType string, startTime int, endTime int) ([]Transaction, error, int) {
 	// var transactions []Transaction
 	// // 假设你有一个获取db实例的函数或全局变量，这里直接使用db作为示例
 	// // result := yourFunctionToGetDB().Find(&transactions) // 如果你不是通过全局变量访问db
@@ -334,10 +334,12 @@ func GetTransactions(pageSize int, pageNum int ,cardNumber string, transactionTy
 	if transactionType != "" {  
 		query = query.Where("transaction_type = ?", transactionType)  
 	}  
-	// if startTime != nil && endTime != nil {  
-	// 	query = query.Where("transaction_time BETWEEN ? AND ?", startTime.Format("2006-01-02 15:04:05"), endTime.Format("2006-01-02 15:04:05"))  
-	// }  
-  
+	if startTime != nil && endTime != nil { 
+		startTimeT := time.Unix(startTime, 0).UTC()  
+        endTimeT := time.Unix(endTime, 0).UTC()   
+		query = query.Where("transaction_time BETWEEN ? AND ?", startTimeT, endTimeT)  
+	}  
+	
 	// 应用分页和排序  
 	result := query.  
 		Select("*").  
@@ -355,9 +357,11 @@ func GetTransactions(pageSize int, pageNum int ,cardNumber string, transactionTy
 	if transactionType != "" {  
 		countQuery = countQuery.Where("transaction_type = ?", transactionType)  
 	}  
-	// if startTime != nil && endTime != nil {  
-	// 	countQuery = countQuery.Where("transaction_time BETWEEN ? AND ?", startTime.Format("2006-01-02 15:04:05"), endTime.Format("2006-01-02 15:04:05"))  
-	// }  
+	if startTime != 0 && endTime != 0 {  
+        startTimeT := time.Unix(startTime, 0).UTC()  
+        endTimeT := time.Unix(endTime, 0).UTC()  
+        query = query.Where("transaction_time BETWEEN ? AND ?", startTimeT, endTimeT)  
+    }   
 	countQuery.Count(&total)  
   
 	if result.Error != nil {  

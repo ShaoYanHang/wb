@@ -254,7 +254,7 @@ func extractAccountNumber(s string) string {
 	return "" // 如果格式不正确，返回空字符串
 }
 
-func GetTransactionRecords(pageSize int, pageNum int, Account string, PaymentMethod string) ([]TransactionRecord, error, int64) {
+func GetTransactionRecords(pageSize int, pageNum int, Account string, PaymentMethod string, startTime int, endTime int) ([]TransactionRecord, error, int64) {
 	// var transactions []TransactionRecord
 	// // 假设你有一个获取db实例的函数或全局变量，这里直接使用db作为示例
 	// // result := yourFunctionToGetDB().Find(&transactions) // 如果你不是通过全局变量访问db
@@ -290,6 +290,14 @@ func GetTransactionRecords(pageSize int, pageNum int, Account string, PaymentMet
     if PaymentMethod != "" {  
         query = query.Where("payment_method = ?", PaymentMethod)  
     }  
+
+	if startTime != 0 && endTime != 0 { 
+		startTimeT := time.Unix(int64(startTime), 0).UTC()  
+        endTimeT := time.Unix(int64(endTime), 0).UTC()
+		startDate := startTimeT.Format("2006-01-02")  
+		endDate := endTimeT.Format("2006-01-02")  
+		query = query.Where("Date BETWEEN ? AND ?", startDate, endDate)  
+	}  
   
     // 执行查询并获取交易记录  
     result := query.Find(&transactionRecords).Count(&total)   

@@ -50,6 +50,8 @@ func ShowFile2(c *gin.Context) {
 	var result []model.TransactionRecord
 	pageSize, _ := strconv.Atoi(c.Query("pagesize"))
 	pageNum, _ := strconv.Atoi(c.Query("pagenum"))
+	startTime, _ := strconv.Atoi(c.Query("start_time"))
+	endTime, _ := strconv.Atoi(c.Query("end_time"))
 	Account := c.Query("account")
 	PaymentMethod := c.Query("payment_method")
 	switch {
@@ -63,7 +65,7 @@ func ShowFile2(c *gin.Context) {
 		pageNum = 1
 	}
 
-	result, err, total := model.GetTransactionRecords(pageSize, pageNum, Account, PaymentMethod)
+	result, err, total := model.GetTransactionRecords(pageSize, pageNum, Account, PaymentMethod,startTime,endTime)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError,
 			gin.H{

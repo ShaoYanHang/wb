@@ -92,8 +92,8 @@ func InitRouter() {
 
 		// 1. 余额 ：开卡 + 充值 + 交易退款 + 交易授权撤销 - 交易授权 - 卡充退
 		// 2. 总消耗 ：交易授权
-		router.POST("showVccBalance", v1.ShowVccBalance)
-		router.POST("showVccDeplete", v1.ShowVccDeplete)
+		// router.POST("showVccBalance", v1.ShowVccBalance)
+		// router.POST("showVccDeplete", v1.ShowVccDeplete)
 
 		// 3. 月份消耗 ：某个月份的交易授权
 		router.POST("showVccDepleteByDate", v1.ShowVccDepleteByDate)

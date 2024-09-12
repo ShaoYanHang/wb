@@ -352,10 +352,10 @@ func GetTransactions(pageSize int, pageNum int ,cardNumber string, transactionTy
 	}
       
 	if set == 0 {  
-		query = query.Order("date ASC")  
+		query = query.Order("transaction_time ASC")  
 		countQuery = countQuery.Order("transaction_time ASC")  
 	} else if set == 1 {  
-		query = query.Order("date DESC")  
+		query = query.Order("transaction_time DESC")  
 		countQuery = countQuery.Order("transaction_time DESC")  
 	}  
     

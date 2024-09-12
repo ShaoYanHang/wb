@@ -474,6 +474,7 @@ func CalVccTotalDeplete(fb_id string, cardnumber string, startTime int, endTime 
 
 type PaginationResult struct {
 	CurrentPage map[string]struct {
+		Fb_id   string
 		Balance string
 		Deplete string
 	} // 当前页的结果
@@ -494,6 +495,7 @@ func ShowVccBalanceAndDepletes(fb_id, string, IDs []string, pageSize int, pageNu
 	if startIndex >= total {
 		// 如果没有足够的ID来填充当前页，则返回一个空的当前页结果
 		return &PaginationResult{CurrentPage: map[string]struct {
+			Fb_id   string
 			Balance string
 			Deplete string
 		}{}}, nil, 0
@@ -508,6 +510,7 @@ func ShowVccBalanceAndDepletes(fb_id, string, IDs []string, pageSize int, pageNu
 	currentPageIDs := IDs[startIndex:endIndex]
 
 	result := make(map[string]struct {
+		Fb_id   string
 		Balance string
 		Deplete string
 	})
@@ -515,9 +518,11 @@ func ShowVccBalanceAndDepletes(fb_id, string, IDs []string, pageSize int, pageNu
 		balance, _ := CalVccBalance(fb_id, id, startTime, endTime)
 		deplete, _ := CalVccTotalDeplete(fb_id, id ,startTime, endTime)
 		result[id] = struct {
+			Fb_id   string
 			Balance string
 			Deplete string
 		}{
+			Fb_id: fb_id,
 		  Balance: fmt.Sprintf("%.2f", balance), 
 		  Deplete: fmt.Sprintf("%.2f", deplete)}
 	}

@@ -63,13 +63,14 @@ func ShowVccBalanceAndDeplete(c *gin.Context) {
 	pageNum, _ := strconv.Atoi(c.Query("pagenum"))
 	startTime, _ := strconv.Atoi(c.Query("start_time"))
 	endTime, _ := strconv.Atoi(c.Query("end_time"))
+	fb_id := c.Query("account")
 	id := c.Query("id")
 	var IDs []string
-	if id == "" {
-		IDs, _ = model.ShowVccID()
+	if fb_id != "" {
+		_, IDs, _ = model.ShowFBID(fb_id)
 		
 	} else {
-		IDs = append([]string{id})
+		IDs, _ = model.ShowVccID()
 	}
 	
 	// if err != nil {
@@ -79,7 +80,7 @@ func ShowVccBalanceAndDeplete(c *gin.Context) {
 	// 		"msg":  err.Error(),
 	// 	})
 	// }
-	paginationResult, err, total := model.ShowVccBalanceAndDepletes(IDs, pageSize, pageNum, startTime, endTime)
+	paginationResult, err, total := model.ShowVccBalanceAndDepletes(fb_id, IDs, pageSize, pageNum, startTime, endTime)
 	
 		c.JSON(http.StatusOK, gin.H{
 			"code": 200,

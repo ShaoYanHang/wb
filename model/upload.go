@@ -370,14 +370,14 @@ func GetTransactions(pageSize int, pageNum int ,cardNumber string, transactionTy
     return transactions, nil, int(total) 
 }
 
-func CalVccBalance(cardnumber string, startTime int, endTime int) (float64, error) {
+func CalVccBalance(fb_id string, cardnumber string, startTime int, endTime int) (float64, error) {
 	
     // 初始化变量  
     var initialAmount, increaseAmount, decreaseAmount float64  
   
     // 查找与特定卡号相关的开卡交易以获取初始金额  
     var initTrans Transaction  
-    if err := db.Where("card_number = ? AND transaction_type = ?", cardnumber, "开卡").First(&initTrans).Error; err != nil {  
+    if err := db.Where("card_number = ? AND transaction_type = ? and nickname = ?", cardnumber, "开卡" , fb_id).First(&initTrans).Error; err != nil {  
         if errors.Is(err, gorm.ErrRecordNotFound) {  
             return 0, fmt.Errorf("没有找到与卡号 %s 相关的开卡交易", cardnumber)  
         }  
@@ -398,7 +398,7 @@ func CalVccBalance(cardnumber string, startTime int, endTime int) (float64, erro
     var sumIncrease float64  
     if err := db.Table("transaction").  
         Select("SUM(order_amount) as total").  
-        Where("card_number = ? AND transaction_type IN ? "+timeCondition, append([]interface{}{cardnumber, []string{"卡充值", "交易退款"}}, timeValues...)...).  
+        Where("card_number = ? AND transaction_type IN ? and nickname = ?"+timeCondition, append([]interface{}{cardnumber, []string{"卡充值", "交易退款"}}, timeValues...)..., fb_id).  
         Scan(&sumIncrease).Error; err != nil {  
         return 0, err  
     }  
@@ -408,7 +408,7 @@ func CalVccBalance(cardnumber string, startTime int, endTime int) (float64, erro
     var sumDecrease float64  
     if err := db.Table("transaction").  
         Select("SUM(order_amount) as total").  
-        Where("card_number = ? AND transaction_type IN ? "+timeCondition, append([]interface{}{cardnumber, []string{"交易授权", "卡充退"}}, timeValues...)...).  
+        Where("card_number = ? AND transaction_type IN ? and nickname = ?"+timeCondition, append([]interface{}{cardnumber, []string{"交易授权", "卡充退"}}, timeValues...)..., fb_id).  
         Scan(&sumDecrease).Error; err != nil {  
         return 0, err  
     }  
@@ -421,7 +421,7 @@ func CalVccBalance(cardnumber string, startTime int, endTime int) (float64, erro
 
 }
 
-func CalVccTotalDeplete(cardnumber string, startTime int, endTime int) (float64, error) {
+func CalVccTotalDeplete(fb_id string, cardnumber string, startTime int, endTime int) (float64, error) {
 
 	// var sumDecrease float64
 	// if err := db.Table("transaction").
@@ -443,7 +443,7 @@ func CalVccTotalDeplete(cardnumber string, startTime int, endTime int) (float64,
   
     // 添加卡号条件  
     conditions = append(conditions, cardnumber)  
-    query = query.Where("card_number = ?", cardnumber)  
+    query = query.Where("card_number = ? and nickname = ?", cardnumber,fb_id)  
   
     // 如果 startTime 和 endTime 都非零，则添加时间范围条件  
     if startTime != 0 && endTime != 0 {  
@@ -478,7 +478,7 @@ type PaginationResult struct {
 }
 
 // 实现分页的 ShowVccBalanceAndDeplete 函数
-func ShowVccBalanceAndDepletes(IDs []string, pageSize int, pageNum int, startTime int, endTime int) (*PaginationResult, error, int) {
+func ShowVccBalanceAndDepletes(fb_id, string, IDs []string, pageSize int, pageNum int, startTime int, endTime int) (*PaginationResult, error, int) {
 
 	if pageSize <= 0 || pageNum <= 0 {
 		return nil, errors.New("pageSize and pageNum must be positive integers"), 0
@@ -510,8 +510,8 @@ func ShowVccBalanceAndDepletes(IDs []string, pageSize int, pageNum int, startTim
 		Deplete string
 	})
 	for _, id := range currentPageIDs {
-		balance, _ := CalVccBalance(id, startTime, endTime)
-		deplete, _ := CalVccTotalDeplete(id ,startTime, endTime)
+		balance, _ := CalVccBalance(fb_id, id, startTime, endTime)
+		deplete, _ := CalVccTotalDeplete(fb_id, id ,startTime, endTime)
 		result[id] = struct {
 			Balance string
 			Deplete string

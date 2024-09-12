@@ -72,10 +72,10 @@ func ShowVccBalanceAndDeplete(c *gin.Context) {
 	} else if fb_id != "" && id != ""{
 		// IDs, _ = model.ShowVccID()
 		IDs = append([]string{id})
-	} else {
+	} else if fb_id == "" && id == ""{
 		IDs, _ = model.ShowVccID()
 		fb_id = model.ShowFB1()
-	}
+	}	
 	
 	paginationResult, err, total := model.ShowVccBalanceAndDepletes(fb_id, IDs, pageSize, pageNum, startTime, endTime)
 	

@@ -363,7 +363,8 @@ func GetTransactions(pageSize int, pageNum int ,cardNumber string, transactionTy
     result := query.  
         Select("*").  
         Limit(pageSize).  
-        Offset((pageNum - 1) * pageSize).  
+        Offset((pageNum - 1) * pageSize).
+		Order("transaction_time ASC").   
         Find(&transactions)  
   
     var total int64  

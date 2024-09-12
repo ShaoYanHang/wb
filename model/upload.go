@@ -398,8 +398,9 @@ func CalVccBalance(fb_id string, cardnumber string, startTime int, endTime int) 
     var sumIncrease float64  
     if err := db.Table("transaction").  
         Select("SUM(order_amount) as total").  
-        Where("card_number = ? AND transaction_type IN ? and nickname = ?"+timeCondition, append([]interface{}{cardnumber, []string{"卡充值", "交易退款"}}, timeValues...)..., fb_id).  
-        Scan(&sumIncrease).Error; err != nil {  
+        Where("card_number = ? AND transaction_type IN ?"+timeCondition, append([]interface{}{cardnumber, []string{"卡充值", "交易退款"}}, timeValues...)...).  
+		Where("nickname = ?", fb_id).
+		Scan(&sumIncrease).Error; err != nil {  
         return 0, err  
     }  
     increaseAmount = sumIncrease  
@@ -408,7 +409,8 @@ func CalVccBalance(fb_id string, cardnumber string, startTime int, endTime int) 
     var sumDecrease float64  
     if err := db.Table("transaction").  
         Select("SUM(order_amount) as total").  
-        Where("card_number = ? AND transaction_type IN ? and nickname = ?"+timeCondition, append([]interface{}{cardnumber, []string{"交易授权", "卡充退"}}, timeValues...)..., fb_id).  
+        Where("card_number = ? AND transaction_type IN ? "+timeCondition, append([]interface{}{cardnumber, []string{"交易授权", "卡充退"}}, timeValues...)...).  
+        Where("nickname = ?", fb_id).  
         Scan(&sumDecrease).Error; err != nil {  
         return 0, err  
     }  

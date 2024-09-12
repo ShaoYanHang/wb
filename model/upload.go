@@ -481,7 +481,7 @@ type PaginationResult struct {
 }
 
 // 实现分页的 ShowVccBalanceAndDeplete 函数
-func ShowVccBalanceAndDepletes(fb_id, string, IDs []string, pageSize int, pageNum int, startTime int, endTime int) (*PaginationResult, error, int) {
+func ShowVccBalanceAndDepletes(fb_id string, IDs []string, pageSize int, pageNum int, startTime int, endTime int) (*PaginationResult, error, int) {
 
 	if pageSize <= 0 || pageNum <= 0 {
 		return nil, errors.New("pageSize and pageNum must be positive integers"), 0

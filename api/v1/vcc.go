@@ -67,6 +67,7 @@ func ShowVccBalanceAndDeplete(c *gin.Context) {
 	var IDs []string
 	if id == "" {
 		IDs, _ = model.ShowVccID()
+		
 	} else {
 		IDs = append([]string{id})
 	}

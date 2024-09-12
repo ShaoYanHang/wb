@@ -70,9 +70,9 @@ func InitRouter() {
 		router.GET("showfb_record", v1.ShowFile2)
 
 		// 展示 FB 每一个账户 每个卡的消耗
-		router.POST("showFBDataByaccount", v1.ShowVirtualCardDataByaccount)
-		// 展示 FB 每一个账户 每个卡的消耗列表
-		router.POST("showFBByaccountList", v1.ShowFBDataByaccountList)
+		router.GET("showFBDataByaccount", v1.ShowVirtualCardDataByaccount)
+		// // 展示 FB 每一个账户 每个卡的消耗列表
+		// router.POST("showFBByaccountList", v1.ShowFBDataByaccountList)
 		// 查询所有虚拟卡的余额和总消耗
 		router.GET("showVccBalanceAndDeplete", v1.ShowVccBalanceAndDeplete)
 

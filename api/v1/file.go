@@ -14,6 +14,7 @@ func ShowFile1(c *gin.Context) {
 	pageNum, _ := strconv.Atoi(c.Query("pagenum"))
 	cardNumber  := c.Query("card_number")
 	transactionType  := c.Query("transaction_type")
+	is_judge, _ := strconv.Atoi(c.Query("is_judge")) 
 	startTime, _ := strconv.Atoi(c.Query("start_time"))
 	endTime, _ := strconv.Atoi(c.Query("end_time"))
 	switch {
@@ -23,11 +24,11 @@ func ShowFile1(c *gin.Context) {
 		pageSize = 10
 	}
 
-	if pageNum == 0 {
-		pageNum = 1
-	}
+	// if pageNum == 0 {
+	// 	pageNum = 1
+	// }
 
-	result, err, total := model.GetTransactions(pageSize, pageNum, cardNumber, transactionType, startTime ,endTime)
+	result, err, total := model.GetTransactions(pageSize, pageNum, cardNumber, transactionType, startTime ,endTime, is_judge)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"code": 500,
@@ -52,6 +53,7 @@ func ShowFile2(c *gin.Context) {
 	pageNum, _ := strconv.Atoi(c.Query("pagenum"))
 	startTime, _ := strconv.Atoi(c.Query("start_time"))
 	endTime, _ := strconv.Atoi(c.Query("end_time"))
+	set, _ := strconv.Atoi(c.Query("set"))
 	Account := c.Query("account")
 	PaymentMethod := c.Query("payment_method")
 	switch {
@@ -61,11 +63,11 @@ func ShowFile2(c *gin.Context) {
 		pageSize = 10
 	}
 
-	if pageNum == 0 {
-		pageNum = 1
-	}
+	// if pageNum == 0 {
+	// 	pageNum = 1
+	// }
 
-	result, err, total := model.GetTransactionRecords(pageSize, pageNum, Account, PaymentMethod,startTime,endTime)
+	result, err, total := model.GetTransactionRecords(pageSize, pageNum, Account, PaymentMethod,startTime,endTime, set)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError,
 			gin.H{
@@ -85,25 +87,31 @@ func ShowFile2(c *gin.Context) {
 }
 
 func ShowVirtualCardDataByaccount(c *gin.Context) {
-	var req model.TransactionRecord
+	// var req model.TransactionRecord
+	Account:= c.Query("account")
+	PaymentMethod := c.Query("payment_method")
+	startTime, _ := strconv.Atoi(c.Query("start_time"))
+	endTime, _ := strconv.Atoi(c.Query("end_time"))
 	// 使用BindJSON方法解析请求体到req变量中
-	if err := c.BindJSON(&req); err != nil {
+	
+	result, err := model.CalFBbyaccount(Account,PaymentMethod,startTime,endTime)
+	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"code": 500,
 			"data": "Invalid JSON body",
 			"msg":  err.Error(),
 		})
 		return
+	} else {
+		c.JSON(
+			http.StatusOK, gin.H{
+				"status": 200,
+				"data":   result,
+				"msg":    err,
+			},
+		)
 	}
-	result, err := model.CalFBbyaccount(req.Account, req.PaymentMethod)
-
-	c.JSON(
-		http.StatusOK, gin.H{
-			"status": 200,
-			"data":   result,
-			"msg":    err,
-		},
-	)
+	
 }
 
 func ShowFBDataByaccountList(c *gin.Context) {

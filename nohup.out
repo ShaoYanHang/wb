@@ -346,3 +346,34 @@ runtime error: index out of range [15] with length 15
 	goexit: BYTE	$0x90	// NOP
 [0m
 2024-08-01 00:00:002024-09-01 00:00:00signal: terminated
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /admin/*filepath          --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (4 handlers)
+[GIN-debug] HEAD   /admin/*filepath          --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (4 handlers)
+[GIN-debug] GET    /admin                    --> app/route.InitRouter.func1 (4 handlers)
+[GIN-debug] GET    /api/v1/admin/users       --> app/api/v1.GetUsers (5 handlers)
+[GIN-debug] PUT    /api/v1/user/:id          --> app/api/v1.EditUser (5 handlers)
+[GIN-debug] DELETE /api/v1/user/:id          --> app/api/v1.DeleteUser (5 handlers)
+[GIN-debug] PUT    /api/v1/admin/changepw/:id --> app/api/v1.ChangeUserPassword (5 handlers)
+[GIN-debug] GET    /api/v1/admin/profile/:id --> app/api/v1.GetProfile (5 handlers)
+[GIN-debug] PUT    /api/v1/profile/:id       --> app/api/v1.UpdateProfile (5 handlers)
+[GIN-debug] POST   /api/v1/user/add          --> app/api/v1.AddUser (5 handlers)
+[GIN-debug] GET    /api/v1/user/:id          --> app/api/v1.GetUserInfo (5 handlers)
+[GIN-debug] GET    /api/v1/users             --> app/api/v1.GetUsers (5 handlers)
+[GIN-debug] POST   /api/v1/upload1           --> app/api/v1.Upload1 (4 handlers)
+[GIN-debug] POST   /api/v1/upload2           --> app/api/v1.Upload2 (4 handlers)
+[GIN-debug] GET    /api/v1/showvcc_record    --> app/api/v1.ShowFile1 (4 handlers)
+[GIN-debug] GET    /api/v1/showfb_record     --> app/api/v1.ShowFile2 (4 handlers)
+[GIN-debug] GET    /api/v1/showFBDataByaccount --> app/api/v1.ShowVirtualCardDataByaccount (4 handlers)
+[GIN-debug] GET    /api/v1/showVccBalanceAndDeplete --> app/api/v1.ShowVccBalanceAndDeplete (4 handlers)
+[GIN-debug] POST   /api/v1/showfb_vccdata    --> app/api/v1.Showfb_vccdata (4 handlers)
+[GIN-debug] POST   /api/v1/updateFBList      --> app/api/v1.UpdateTransactionRecord (4 handlers)
+[GIN-debug] POST   /api/v1/login             --> app/api/v1.Login (4 handlers)
+[GIN-debug] POST   /api/v1/loginfront        --> app/api/v1.LoginFront (4 handlers)
+[GIN-debug] GET    /api/v1/showVccID         --> app/api/v1.ShowVccID (4 handlers)
+[GIN-debug] GET    /api/v1/showFBID          --> app/api/v1.ShowFBID (4 handlers)
+[GIN-debug] POST   /api/v1/showVccDepleteByDate --> app/api/v1.ShowVccDepleteByDate (4 handlers)
+[GIN-debug] Listening and serving HTTP on :39010
+signal: terminated

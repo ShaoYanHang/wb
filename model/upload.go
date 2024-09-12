@@ -317,7 +317,7 @@ func GetTransactionRecords(pageSize int, pageNum int, Account string, PaymentMet
     return transactionRecords, nil, total  
 }
 
-func GetTransactions(pageSize int, pageNum int ,cardNumber string, transactionType string, startTime int, endTime int, is_judge int) ([]Transaction, error, int) {
+func GetTransactions(pageSize int, pageNum int ,cardNumber string, transactionType string, startTime int, endTime int, is_judge int, set int) ([]Transaction, error, int) {
 	 
 	var transactions []Transaction  
   
@@ -351,13 +351,19 @@ func GetTransactions(pageSize int, pageNum int ,cardNumber string, transactionTy
 		}
 	}
       
+	if set == 0 {  
+		query = query.Order("date ASC")  
+		countQuery = countQuery.Order("transaction_time ASC")  
+	} else if set == 1 {  
+		query = query.Order("date DESC")  
+		countQuery = countQuery.Order("transaction_time DESC")  
+	}  
     
     // 应用分页和排序  
     result := query.  
         Select("*").  
         Limit(pageSize).  
         Offset((pageNum - 1) * pageSize).  
-        Order("transaction_time ASC").  
         Find(&transactions)  
   
     var total int64  

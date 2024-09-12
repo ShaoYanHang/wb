@@ -380,7 +380,8 @@ func GetTransactions(pageSize int, pageNum int ,cardNumber string, transactionTy
 func CalVccBalance(fb_id string, cardnumber string, startTime int, endTime int) (float64, error) {
 	
     // 初始化变量  
-    var initialAmount, increaseAmount, decreaseAmount float64  
+    var initialAmount, increaseAmount float64  
+	// decreaseAmount float64  
   
     // 查找与特定卡号相关的开卡交易以获取初始金额  
     var initTrans Transaction  

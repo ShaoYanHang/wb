@@ -412,7 +412,7 @@ func CalVccBalance(fb_id string, cardnumber string, startTime int, endTime int) 
         return 0, err  
     }  
     increaseAmount = sumIncrease  
-  
+	fmt.Print(increaseAmount)
     // 计算减少余额的交易总和  
     // var sumDecrease float64  
     // if err := db.Table("transaction").  

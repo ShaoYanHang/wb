@@ -540,6 +540,14 @@ func ShowVccID() ([]string, error) {
 	}
 	return cardNumbers, nil
 }
+func ShowFB1() string {
+	var accounts string
+	err := db.Raw("SELECT  account FROM transaction_record limit 1").Scan(&accounts).Error
+	if err != nil {  
+		return ""  
+	}  
+	return accounts
+}
 
 func ShowFBID(Account string) ([]string, []string, error) {  
     var accounts []string  

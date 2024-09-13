@@ -412,7 +412,7 @@ func CalVccBalance(fb_id string, cardnumber string, startTime int, endTime int) 
         return 0, err  
     }  
     increaseAmount = sumIncrease  
-	fmt.Print(increaseAmount)
+	// fmt.Print(increaseAmount)
     // 计算减少余额的交易总和  
     // var sumDecrease float64  
     // if err := db.Table("transaction").  
@@ -498,7 +498,7 @@ func ShowVccBalanceAndDepletes(fb_id string, IDs []string, pageSize int, pageNum
 
 	// 计算总项数
 	total := len(IDs)
-	fmt.Print(total)
+
 	// 计算当前页应该包含的ID索引范围
 	startIndex := (pageNum - 1) * pageSize
 	if startIndex >= total {
@@ -595,7 +595,7 @@ func CalVccDepleteByDate(year, month int, cardNumber string) (float64, error) {
 	// 计算开始和结束时间
 	start := time.Date(year, time.Month(month), 1, 0, 0, 0, 0, time.UTC)
 	end := start.AddDate(0, 1, -1).Add(24 * time.Hour) // 加上24小时以包括当天的23:59:59
-	fmt.Print(start.Format("2006-01-02 00:00:00"), end.Format("2006-01-02 00:00:00"))
+	// fmt.Print(start.Format("2006-01-02 00:00:00"), end.Format("2006-01-02 00:00:00"))
 	// 使用GORM查询
 	var totalAmount float64
 	err := db.Table("transaction").

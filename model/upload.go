@@ -255,180 +255,179 @@ func extractAccountNumber(s string) string {
 }
 
 func GetTransactionRecords(pageSize int, pageNum int, Account string, PaymentMethod string, startTime int, endTime int, set int) ([]TransactionRecord, error, int64) {
-	
 
-	var transactionRecords []TransactionRecord  
-    query := db.Model(&TransactionRecord{})  
-    countQuery := db.Model(&TransactionRecord{}) // 初始化countQuery
-	
-    // 构造查询条件  
-    // query := db.Select("*").  
-    //     Limit(pageSize).  
-    //     Offset((pageNum - 1) * pageSize)
-	if set == 0 {  
-		query = query.Order("date ASC")  
-		countQuery = countQuery.Order("date ASC")  
-	} else if set == 1 {  
-		query = query.Order("date DESC")  
-		countQuery = countQuery.Order("date DESC")  
-	}  
-    // 如果 Account 不是空字符串，则添加 Account 过滤条件  
-    if Account != "" {  
-        query = query.Where("account = ?", Account)  
-        countQuery = countQuery.Where("account = ?", Account)  
-    }  
-  
-    // 如果 PaymentMethod 不是空字符串，则添加 PaymentMethod 过滤条件  
-    if PaymentMethod != "" {  
-        query = query.Where("payment_method = ?", PaymentMethod)  
-        countQuery = countQuery.Where("payment_method = ?", PaymentMethod)  
-    }  
+	var transactionRecords []TransactionRecord
+	query := db.Model(&TransactionRecord{})
+	countQuery := db.Model(&TransactionRecord{}) // 初始化countQuery
 
-	if startTime != 0 && endTime != 0 { 
-		startTimeT := time.Unix(int64(startTime), 0).UTC()  
-        endTimeT := time.Unix(int64(endTime), 0).UTC()
-		startDate := startTimeT.Format("2006-01-02")  
-		endDate := endTimeT.Format("2006-01-02")  
-		query = query.Where("Date BETWEEN ? AND ?", startDate, endDate)  
-		countQuery = countQuery.Where("Date BETWEEN ? AND ?", startDate, endDate)  
-	}  
-  
-    // 执行查询并获取交易记录  
-    // result := query.Find(&transactionRecords).Count(&total)   
-    result := query.  
-        Select("*").  
-        Limit(pageSize).  
-        Offset((pageNum - 1) * pageSize).  
-        Order("Date ASC").  
-        Find(&transactionRecords)  
-  
-    var total int64  
-    countQuery.Count(&total) 
-    // 单独执行计数查询以获取总记录数  
-    // db.Model(&TransactionRecord{}).Count(&total)  
-  
-    // 检查查询过程中是否发生错误  
-    if result.Error != nil {  
-        // 如果查询过程中发生错误，返回错误  
-        return nil, errors.New("failed to retrieve transactions: " + result.Error.Error()), 0  
-    }  
-  
-    // 如果没有错误，返回查询到的交易记录列表、nil（表示没有错误）和总记录数  
-    return transactionRecords, nil, total  
+	// 构造查询条件
+	// query := db.Select("*").
+	//     Limit(pageSize).
+	//     Offset((pageNum - 1) * pageSize)
+	if set == 0 {
+		query = query.Order("date ASC")
+		countQuery = countQuery.Order("date ASC")
+	} else if set == 1 {
+		query = query.Order("date DESC")
+		countQuery = countQuery.Order("date DESC")
+	}
+	// 如果 Account 不是空字符串，则添加 Account 过滤条件
+	if Account != "" {
+		query = query.Where("account = ?", Account)
+		countQuery = countQuery.Where("account = ?", Account)
+	}
+
+	// 如果 PaymentMethod 不是空字符串，则添加 PaymentMethod 过滤条件
+	if PaymentMethod != "" {
+		query = query.Where("payment_method = ?", PaymentMethod)
+		countQuery = countQuery.Where("payment_method = ?", PaymentMethod)
+	}
+
+	if startTime != 0 && endTime != 0 {
+		startTimeT := time.Unix(int64(startTime), 0).UTC()
+		endTimeT := time.Unix(int64(endTime), 0).UTC()
+		startDate := startTimeT.Format("2006-01-02")
+		endDate := endTimeT.Format("2006-01-02")
+		query = query.Where("Date BETWEEN ? AND ?", startDate, endDate)
+		countQuery = countQuery.Where("Date BETWEEN ? AND ?", startDate, endDate)
+	}
+
+	// 执行查询并获取交易记录
+	// result := query.Find(&transactionRecords).Count(&total)
+	result := query.
+		Select("*").
+		Limit(pageSize).
+		Offset((pageNum - 1) * pageSize).
+		Order("Date ASC").
+		Find(&transactionRecords)
+
+	var total int64
+	countQuery.Count(&total)
+	// 单独执行计数查询以获取总记录数
+	// db.Model(&TransactionRecord{}).Count(&total)
+
+	// 检查查询过程中是否发生错误
+	if result.Error != nil {
+		// 如果查询过程中发生错误，返回错误
+		return nil, errors.New("failed to retrieve transactions: " + result.Error.Error()), 0
+	}
+
+	// 如果没有错误，返回查询到的交易记录列表、nil（表示没有错误）和总记录数
+	return transactionRecords, nil, total
 }
 
-func GetTransactions(pageSize int, pageNum int ,cardNumber string, transactionType string, startTime int, endTime int, is_judge int, set int) ([]Transaction, error, int) {
-	 
-	var transactions []Transaction  
-  
-    // 构建查询条件  
-    query := db.Model(&Transaction{})  
-    countQuery := db.Model(&Transaction{}) // 初始化countQuery  
-  
-    if cardNumber != "" {  
-        query = query.Where("card_number LIKE ?", "%"+cardNumber+"%")  
-        countQuery = countQuery.Where("card_number LIKE ?", "%"+cardNumber+"%")  
-    }  
-  
-    if transactionType != "" {  
-        query = query.Where("transaction_type = ?", transactionType)  
-        countQuery = countQuery.Where("transaction_type = ?", transactionType)  
-    }  
-  
-    if startTime != 0 && endTime != 0 {  
-        startTimeT := time.Unix(int64(startTime), 0).UTC()  
-        endTimeT := time.Unix(int64(endTime), 0).UTC()  
-        query = query.Where("transaction_time BETWEEN ? AND ?", startTimeT, endTimeT)  
-        countQuery = countQuery.Where("transaction_time BETWEEN ? AND ?", startTimeT, endTimeT)  
-    }  
+func GetTransactions(pageSize int, pageNum int, cardNumber string, transactionType string, startTime int, endTime int, is_judge int, set int) ([]Transaction, error, int) {
+
+	var transactions []Transaction
+
+	// 构建查询条件
+	query := db.Model(&Transaction{})
+	countQuery := db.Model(&Transaction{}) // 初始化countQuery
+
+	if cardNumber != "" {
+		query = query.Where("card_number LIKE ?", "%"+cardNumber+"%")
+		countQuery = countQuery.Where("card_number LIKE ?", "%"+cardNumber+"%")
+	}
+
+	if transactionType != "" {
+		query = query.Where("transaction_type = ?", transactionType)
+		countQuery = countQuery.Where("transaction_type = ?", transactionType)
+	}
+
+	if startTime != 0 && endTime != 0 {
+		startTimeT := time.Unix(int64(startTime), 0).UTC()
+		endTimeT := time.Unix(int64(endTime), 0).UTC()
+		query = query.Where("transaction_time BETWEEN ? AND ?", startTimeT, endTimeT)
+		countQuery = countQuery.Where("transaction_time BETWEEN ? AND ?", startTimeT, endTimeT)
+	}
 	if is_judge != -1 {
-		if is_judge == 0 {  
-			query = query.Where("is_judge = ? AND transaction_type = ?", 0, "交易清算")  
-			countQuery = countQuery.Where("is_judge = ? AND transaction_type = ?", 0, "交易清算")  
-		} else if is_judge == 1 {  
-			query = query.Where("is_judge = ? AND transaction_type = ?", 1, "交易清算")  
-			countQuery = countQuery.Where("is_judge = ? AND transaction_type = ?", 1, "交易清算")  
+		if is_judge == 0 {
+			query = query.Where("is_judge = ? AND transaction_type = ?", 0, "交易清算")
+			countQuery = countQuery.Where("is_judge = ? AND transaction_type = ?", 0, "交易清算")
+		} else if is_judge == 1 {
+			query = query.Where("is_judge = ? AND transaction_type = ?", 1, "交易清算")
+			countQuery = countQuery.Where("is_judge = ? AND transaction_type = ?", 1, "交易清算")
 		}
 	}
-      
-	if set == 0 {  
-		query = query.Order("transaction_time ASC")  
-		countQuery = countQuery.Order("transaction_time ASC")  
-	} else if set == 1 {  
-		query = query.Order("transaction_time DESC")  
-		countQuery = countQuery.Order("transaction_time DESC")  
-	}  
-    
-    // 应用分页和排序  
-    result := query.  
-        Select("*").  
-        Limit(pageSize).  
-        Offset((pageNum - 1) * pageSize).
-		Order("transaction_time ASC").   
-        Find(&transactions)  
-  
-    var total int64  
-    countQuery.Count(&total)  
-  
-    if result.Error != nil {  
-        return nil, errors.New("failed to retrieve transactions: " + result.Error.Error()), 0  
-    }  
-  
-    return transactions, nil, int(total) 
+
+	if set == 0 {
+		query = query.Order("transaction_time ASC")
+		countQuery = countQuery.Order("transaction_time ASC")
+	} else if set == 1 {
+		query = query.Order("transaction_time DESC")
+		countQuery = countQuery.Order("transaction_time DESC")
+	}
+
+	// 应用分页和排序
+	result := query.
+		Select("*").
+		Limit(pageSize).
+		Offset((pageNum - 1) * pageSize).
+		Order("transaction_time ASC").
+		Find(&transactions)
+
+	var total int64
+	countQuery.Count(&total)
+
+	if result.Error != nil {
+		return nil, errors.New("failed to retrieve transactions: " + result.Error.Error()), 0
+	}
+
+	return transactions, nil, int(total)
 }
 
 func CalVccBalance(fb_id string, cardnumber string, startTime int, endTime int) (float64, error) {
-	
-    // 初始化变量  
-    var initialAmount, increaseAmount float64  
-	// decreaseAmount float64  
-  
-    // 查找与特定卡号相关的开卡交易以获取初始金额  
-    var initTrans Transaction  
-    if err := db.Where("card_number = ? AND transaction_type = ? and nickname = ?", cardnumber, "开卡" , fb_id).First(&initTrans).Error; err != nil {  
-        if errors.Is(err, gorm.ErrRecordNotFound) {  
-            return 0, fmt.Errorf("没有找到与卡号 %s 相关的开卡交易", cardnumber)  
-        }  
-        return 0, err  
-    }  
-    initialAmount = initTrans.OrderAmount  
-  
-    // 准备时间条件  
-    var timeCondition string  
-    var timeValues []interface{}  
-    if startTime != 0 && endTime != 0 {  
-        // 如果startTime和endTime都不为0，则添加时间范围条件  
-        timeCondition = "AND transaction_time BETWEEN ? AND ?"  
-        timeValues = append(timeValues, time.Unix(int64(startTime), 0).UTC(), time.Unix(int64(endTime), 0).UTC())  
-    }
-  
-    // 计算增加余额的交易总和  
-    var sumIncrease float64  
-    if err := db.Table("transaction").  
-        Select("SUM(order_amount) as total").  
-        Where("card_number = ? AND transaction_type IN ?"+timeCondition, append([]interface{}{cardnumber, []string{"卡充值", "交易退款", "交易授权", "卡充退"}}, timeValues...)...).  
+
+	// 初始化变量
+	var initialAmount, increaseAmount float64
+	// decreaseAmount float64
+
+	// 查找与特定卡号相关的开卡交易以获取初始金额
+	var initTrans Transaction
+	if err := db.Where("card_number = ? AND transaction_type = ? and nickname = ?", cardnumber, "开卡", fb_id).First(&initTrans).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return 0, fmt.Errorf("没有找到与卡号 %s 相关的开卡交易", cardnumber)
+		}
+		return 0, err
+	}
+	initialAmount = initTrans.OrderAmount
+
+	// 准备时间条件
+	var timeCondition string
+	var timeValues []interface{}
+	if startTime != 0 && endTime != 0 {
+		// 如果startTime和endTime都不为0，则添加时间范围条件
+		timeCondition = "AND transaction_time BETWEEN ? AND ?"
+		timeValues = append(timeValues, time.Unix(int64(startTime), 0).UTC(), time.Unix(int64(endTime), 0).UTC())
+	}
+
+	// 计算增加余额的交易总和
+	var sumIncrease float64
+	if err := db.Table("transaction").
+		Select("SUM(order_amount) as total").
+		Where("card_number = ? AND transaction_type IN ?"+timeCondition, append([]interface{}{cardnumber, []string{"卡充值", "交易退款", "交易授权", "卡充退", "交易授权撤销"}}, timeValues...)...).
 		Where("nickname = ?", fb_id).
-		Scan(&sumIncrease).Error; err != nil {  
-        return 0, err  
-    }  
-    increaseAmount = sumIncrease  
+		Scan(&sumIncrease).Error; err != nil {
+		return 0, err
+	}
+	increaseAmount = sumIncrease
 	// fmt.Print(increaseAmount)
-    // 计算减少余额的交易总和  
-    // var sumDecrease float64  
-    // if err := db.Table("transaction").  
-    //     Select("SUM(order_amount) as total").  
-    //     Where("card_number = ? AND transaction_type IN ? "+timeCondition, append([]interface{}{cardnumber, []string{"交易授权", "卡充退"}}, timeValues...)...).  
-    //     Where("nickname = ?", fb_id).  
-    //     Scan(&sumDecrease).Error; err != nil {  
-    //     return 0, err  
-    // }  
-    // decreaseAmount = sumDecrease  
-  
-    // 计算最终余额  
-    balance := initialAmount + increaseAmount 
-	// + decreaseAmount  // 注意这里应该是增加-减少  
-  
-    return balance, nil  
+	// 计算减少余额的交易总和
+	// var sumDecrease float64
+	// if err := db.Table("transaction").
+	//     Select("SUM(order_amount) as total").
+	//     Where("card_number = ? AND transaction_type IN ? "+timeCondition, append([]interface{}{cardnumber, []string{"交易授权", "卡充退"}}, timeValues...)...).
+	//     Where("nickname = ?", fb_id).
+	//     Scan(&sumDecrease).Error; err != nil {
+	//     return 0, err
+	// }
+	// decreaseAmount = sumDecrease
+
+	// 计算最终余额
+	balance := initialAmount + increaseAmount
+	// + decreaseAmount  // 注意这里应该是增加-减少
+
+	return balance, nil
 
 }
 
@@ -446,39 +445,39 @@ func CalVccTotalDeplete(fb_id string, cardnumber string, startTime int, endTime 
 	// balance := decreaseAmount
 
 	// return balance, nil
-	var sumDecrease float64  
-    // 构建查询条件  
-    var conditions []interface{}  
-    query := db.Table("transaction").  
-        Select("SUM(order_amount) as total")  
-  
-    // 添加卡号条件  
-    conditions = append(conditions, cardnumber)  
-    query = query.Where("card_number = ? and nickname = ?", cardnumber,fb_id)  
-  
-    // 如果 startTime 和 endTime 都非零，则添加时间范围条件  
-    if startTime != 0 && endTime != 0 {  
-        // 假设 transaction_time 是 UNIX 时间戳（int 类型）  
+	var sumDecrease float64
+	// 构建查询条件
+	var conditions []interface{}
+	query := db.Table("transaction").
+		Select("SUM(order_amount) as total")
+
+	// 添加卡号条件
+	conditions = append(conditions, cardnumber)
+	query = query.Where("card_number = ? and nickname = ?", cardnumber, fb_id)
+
+	// 如果 startTime 和 endTime 都非零，则添加时间范围条件
+	if startTime != 0 && endTime != 0 {
+		// 假设 transaction_time 是 UNIX 时间戳（int 类型）
 		startTime1 := time.Unix(int64(startTime), 0).UTC()
 		endTime1 := time.Unix(int64(endTime), 0).UTC()
-        conditions = append(conditions, startTime1, endTime1)  
-        query = query.Where("transaction_time BETWEEN ? AND ?", startTime1, endTime1)  
-    }  
-  
-    // 添加交易类型条件  
-    conditions = append(conditions, []string{"交易授权"}) // 注意使用 ... 来展开切片  
-    query = query.Where("transaction_type IN ?", conditions[len(conditions)-1:]) // 注意这里的切片操作  
-  
-    // 执行查询并扫描结果  
-    if err := query.Scan(&sumDecrease).Error; err != nil {  
-        return 0, err // 如果查询或扫描失败，返回错误  
-    }  
-  
-    // 计算最终余额（这里假设 decreaseAmount 就是你要的余额减少量）  
-    // 注意：通常我们需要一个初始的余额值来减去 decreaseAmount，但这里没有提供，所以只返回减少量  
-    balance := sumDecrease // 如果 balance 是减少量，这里直接赋值  
-  
-    return balance, nil
+		conditions = append(conditions, startTime1, endTime1)
+		query = query.Where("transaction_time BETWEEN ? AND ?", startTime1, endTime1)
+	}
+
+	// 添加交易类型条件
+	conditions = append(conditions, []string{"交易授权"})                            // 注意使用 ... 来展开切片
+	query = query.Where("transaction_type IN ?", conditions[len(conditions)-1:]) // 注意这里的切片操作
+
+	// 执行查询并扫描结果
+	if err := query.Scan(&sumDecrease).Error; err != nil {
+		return 0, err // 如果查询或扫描失败，返回错误
+	}
+
+	// 计算最终余额（这里假设 decreaseAmount 就是你要的余额减少量）
+	// 注意：通常我们需要一个初始的余额值来减去 decreaseAmount，但这里没有提供，所以只返回减少量
+	balance := sumDecrease // 如果 balance 是减少量，这里直接赋值
+
+	return balance, nil
 }
 
 type PaginationResult struct {
@@ -525,15 +524,15 @@ func ShowVccBalanceAndDepletes(fb_id string, IDs []string, pageSize int, pageNum
 	})
 	for _, id := range currentPageIDs {
 		balance, _ := CalVccBalance(fb_id, id, startTime, endTime)
-		deplete, _ := CalVccTotalDeplete(fb_id, id ,startTime, endTime)
+		deplete, _ := CalVccTotalDeplete(fb_id, id, startTime, endTime)
 		result[id] = struct {
 			Fb_id   string
 			Balance string
 			Deplete string
 		}{
-			Fb_id: fb_id,
-		  Balance: fmt.Sprintf("%.2f", balance), 
-		  Deplete: fmt.Sprintf("%.2f", deplete)}
+			Fb_id:   fb_id,
+			Balance: fmt.Sprintf("%.2f", balance),
+			Deplete: fmt.Sprintf("%.2f", deplete)}
 	}
 
 	return &PaginationResult{CurrentPage: result}, nil, total
@@ -552,40 +551,43 @@ func ShowVccID() ([]string, error) {
 func ShowFB1() string {
 	var accounts string
 	err := db.Raw("SELECT  account FROM transaction_record limit 1").Scan(&accounts).Error
-	if err != nil {  
-		return ""  
-	}  
+	if err != nil {
+		return ""
+	}
 	return accounts
 }
 
-func ShowFBID(Account string) ([]string, []string, error) {  
-    var accounts []string  
-    var paymentMethods []string  
-  
-    // 如果 Account 为空，则仅查询所有不同的 account  
-    if Account == "" {  
-        err := db.Raw("SELECT DISTINCT account FROM transaction_record").Scan(&accounts).Error  
-        if err != nil {  
-            return nil, nil, errors.New("failed to query unique accounts: " + err.Error())  
-        }  
-        return accounts, []string{}, nil // 第二个数组为空，因为没有针对 Account 的 PaymentMethod  
-    }  
-  
-    // 如果 Account 非空，则查询该 Account 下的所有不同 PaymentMethod  
-    // 注意：这里我们实际上并不查询 account，但为了保持函数签名，我们仍然声明 accounts 变量  
-    // 但我们不会填充它，因为我们只关心 PaymentMethod  
-    err := db.Table("transaction_record").  
-        Select("DISTINCT payment_method").  
-        Where("account = ?", Account).  
-        Scan(&paymentMethods).Error  
-  
-    if err != nil {  
-        return nil, nil, errors.New("failed to query unique payment methods for account: " + err.Error())  
-    }  
-  
-    // 由于我们实际上没有查询 account，这里可以返回一个空数组或特定值  
-    // 但为了保持函数签名的一致性，我们仍然返回 accounts（空）  
-    return []string{}, paymentMethods, nil  
+func ShowFBID(Account string) ([]string, []string, error) {
+	var accounts []string
+	var paymentMethods []string
+
+	// 如果 Account 为空，则仅查询所有不同的 account
+	if Account == "" {
+		err := db.Raw("SELECT DISTINCT nickname FROM transaction").Scan(&accounts).Error
+		if err != nil {
+			return nil, nil, errors.New("failed to query unique accounts: " + err.Error())
+		}
+		return accounts, []string{}, nil // 第二个数组为空，因为没有针对 Account 的 PaymentMethod
+	}
+
+	// 如果 Account 非空，则查询该 Account 下的所有不同 PaymentMethod
+	// 注意：这里我们实际上并不查询 account，但为了保持函数签名，我们仍然声明 accounts 变量
+	// 但我们不会填充它，因为我们只关心 PaymentMethod
+	// err := db.Table("transaction_record").
+	//     Select("DISTINCT payment_method").
+	//     Where("account = ?", Account).
+	//     Scan(&paymentMethods).Error
+	err := db.Table("transaction").
+		Select("DISTINCT card_number").
+		Where("nickname = ?", Account).
+		Scan(&paymentMethods).Error
+	if err != nil {
+		return nil, nil, errors.New("failed to query unique payment methods for account: " + err.Error())
+	}
+
+	// 由于我们实际上没有查询 account，这里可以返回一个空数组或特定值
+	// 但为了保持函数签名的一致性，我们仍然返回 accounts（空）
+	return []string{}, paymentMethods, nil
 }
 
 func CalVccDepleteByDate(year, month int, cardNumber string) (float64, error) {
@@ -611,37 +613,37 @@ func CalVccDepleteByDate(year, month int, cardNumber string) (float64, error) {
 	return totalAmount, nil
 }
 
-func CalFBbyaccount(account string, card_id string ,startTime int,endTime int) (float64, error) {
+func CalFBbyaccount(account string, card_id string, startTime int, endTime int) (float64, error) {
 	var totalAmount float64
-	if startTime != 0 && endTime != 0 { 
-		startTimeT := time.Unix(int64(startTime), 0).UTC()  
-        endTimeT := time.Unix(int64(endTime), 0).UTC()
-		startDate := startTimeT.Format("2006-01-02")  
-		endDate := endTimeT.Format("2006-01-02")  
+	if startTime != 0 && endTime != 0 {
+		startTimeT := time.Unix(int64(startTime), 0).UTC()
+		endTimeT := time.Unix(int64(endTime), 0).UTC()
+		startDate := startTimeT.Format("2006-01-02")
+		endDate := endTimeT.Format("2006-01-02")
 		err := db.Table("transaction_record").
-		Where("account = ? AND payment_method LIKE ?", account, card_id).
-		Where("Date BETWEEN ? AND ?", startDate, endDate).
-		Select("SUM(amount) as total_amount").
-		Scan(&totalAmount).
-		Error 
+			Where("account = ? AND payment_method LIKE ?", account, card_id).
+			Where("Date BETWEEN ? AND ?", startDate, endDate).
+			Select("SUM(amount) as total_amount").
+			Scan(&totalAmount).
+			Error
 		if err != nil {
 			return 0, err
 		}
-	
+
 		return totalAmount, nil
 	} else {
 		err := db.Table("transaction_record").
-		Where("account = ? AND payment_method LIKE ?", account, card_id).
-		Select("SUM(amount) as total_amount").
-		Scan(&totalAmount).
-		Error
+			Where("account = ? AND payment_method LIKE ?", account, card_id).
+			Select("SUM(amount) as total_amount").
+			Scan(&totalAmount).
+			Error
 		if err != nil {
 			return 0, err
 		}
-	
+
 		return totalAmount, nil
 	}
-	
+
 }
 
 func CalFBbyaccountList(account string, card_id string) ([]TransactionRecord, error) {
